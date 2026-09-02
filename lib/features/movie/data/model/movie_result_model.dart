@@ -1,18 +1,6 @@
-import 'package:movie_verse/features/movie/domain/entities/popular_movie_entity.dart';
+import 'package:movie_verse/features/movie/domain/entities/movie_result_entity.dart';
 
-class PopularMovieModel extends PopularMovieEntity {
-  PopularMovieModel({required super.results});
-
-  factory PopularMovieModel.fromJson(Map<String, dynamic> json) {
-    return PopularMovieModel(
-      results: (json["results"] as List)
-          .map((s) => ResultModel.fromJson(s))
-          .toList(),
-    );
-  }
-}
-
-class ResultModel extends ResultEntity {
+class ResultModel extends MovieResultEntity {
   ResultModel({
     required super.id,
     required super.title,
