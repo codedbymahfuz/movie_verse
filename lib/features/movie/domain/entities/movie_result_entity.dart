@@ -1,12 +1,4 @@
- class PopularMovieEntity {
-  final List<ResultEntity> results;
-
-  PopularMovieEntity({
-    required this.results,
-  });
-}
-
-class ResultEntity {
+class MovieResultEntity {
   final int id;
   final String title;
   final String overView;
@@ -14,7 +6,7 @@ class ResultEntity {
   final String originalTitle;
   final String releaseDate;
 
-  ResultEntity({
+  MovieResultEntity({
     required this.id,
     required this.title,
     required this.overView,

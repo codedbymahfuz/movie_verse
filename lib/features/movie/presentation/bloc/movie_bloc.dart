@@ -14,7 +14,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     try {
       final getPopularMovie = await repository.getPopularMovies();
 
-    emit(GetPopularMoviesState(popularMovie: getPopularMovie));
+    emit(GetMoviesState(movieList: getPopularMovie));
 
     } catch (e) {
       emit(ErrorState(errorMessage: e.toString()));
@@ -22,5 +22,31 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
 
 
    });
+
+    on<TopRatedMoviesEvent>((event, emit) async {
+
+      try {
+      final topRatedMovie = await repository.getTopRatedMovies();
+
+    emit(GetMoviesState(movieList: topRatedMovie));
+
+    } catch (e) {
+      emit(ErrorState(errorMessage: e.toString()));
+    }
+
+    });
+
+    on<UpComingMoviesEvent>((event, emit) async {
+
+      try {
+      final upComingMovie = await repository.getUpComingMovie();
+
+    emit(GetMoviesState(movieList: upComingMovie));
+
+    } catch (e) {
+      emit(ErrorState(errorMessage: e.toString()));
+    }
+
+    });
   }
 }
