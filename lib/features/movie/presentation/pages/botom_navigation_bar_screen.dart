@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
 import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_pages/explore_screen.dart';
 import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_pages/home_screen.dart';
 import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_pages/search_screen.dart';
@@ -23,13 +24,13 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0A0C10),
+      backgroundColor: AppColors.bgDeep,
       appBar: AppBar(
-        backgroundColor: Color(0xFF0A0C10),
+        backgroundColor: AppColors.bgDeep,
         elevation: 5,
         title: Text("Cine Verse",
           style: TextStyle(
-            color: Color(0xFFD4A2AE)
+            color: AppColors.appBarTitleColor,
           ),
         ),
          centerTitle: true,
@@ -39,9 +40,11 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
       bottomNavigationBar: Container(
         height: 70,
         decoration: BoxDecoration(
-          color: Color(0xFF0D0F14),
+          color: AppColors.midNight,
 
-          border: Border.all(color: Color(0xFF1A1D24)),
+          border: Border.all(
+            color: AppColors.borderDark,
+          ),
         ),
         child: Row(
           children: [
@@ -69,12 +72,12 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
           children: [
             Icon(
               icon,
-              color: isSelected ? Color(0xFFD4A24E) : Color(0xFF5B6270),
+              color: isSelected ? AppColors.warmAmber : AppColors.secondary,
             ),
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? Color(0xFFD4A24E) : Color(0xFF5B6270),
+                color: isSelected ? AppColors.warmAmber : AppColors.secondary,
               ),
             ),
           ],

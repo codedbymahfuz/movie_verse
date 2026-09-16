@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
 
 class MovieCard extends StatelessWidget {
-  const MovieCard({super.key});
+  final bool ratingShow;
+  const MovieCard({super.key, this.ratingShow = true});
 
   @override
   Widget build(BuildContext context) {
     final String imageUrl =
         "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-    
+
     return Column(
       children: [
         Expanded(
@@ -23,7 +25,9 @@ class MovieCard extends StatelessWidget {
                 ),
               ),
 
-              Positioned(bottom: 5, left: 8, child: _movieRating()),
+              ratingShow
+                  ? Positioned(bottom: 5, left: 8, child: _movieRating(),)
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
@@ -34,7 +38,7 @@ class MovieCard extends StatelessWidget {
           "Movie test",
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: Colors.white70),
+          style: TextStyle(color: AppColors.primary.withValues(alpha: 0.7)),
         ),
       ],
     );
@@ -44,15 +48,18 @@ class MovieCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
-        color: Color(0xFF0A0C10),
+        color: AppColors.midNight,
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
         children: [
-          Icon(Icons.star, color: Colors.amber, size: 13),
-          Text("8.1", style: TextStyle(fontSize: 12, color: Colors.amber)),
+          Icon(Icons.star, color: AppColors.warmAmber, size: 13),
+          Text(
+            "8.1",
+            style: TextStyle(fontSize: 12, color: AppColors.warmAmber),
+          ),
         ],
       ),
     );

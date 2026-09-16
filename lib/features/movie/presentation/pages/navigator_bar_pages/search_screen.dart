@@ -1,37 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-     final serchBoxColor = Color(0xFF5B6270);
     return Column(
-      
       children: [
-
         const SizedBox(height: 18),
 
         Center(
-          child: ConstrainedBox(constraints: BoxConstraints(
-            maxWidth: 350
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 350),
+            child: _searchingBoxText(AppColors.secondary),
           ),
-           child: _searchingBoxText(serchBoxColor),
-                ),
         ),
 
         const SizedBox(height: 30),
 
-        const Text("No Data Found",
-          style: TextStyle(
-            fontSize: 15,
-            color: Color(0xFF5B6270)
-          ),
-         )
-
-
-
+        const Text(
+          "No Data Found",
+          style: TextStyle(fontSize: 15, color: AppColors.secondary),
+        ),
       ],
     );
   }
@@ -42,37 +33,30 @@ class SearchScreen extends StatelessWidget {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xFF0D0F14),
+          color: AppColors.midNight,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Color(0xFF5B6270)
-          )
+          border: Border.all(color: AppColors.secondary),
         ),
         child: Row(
           children: [
             const SizedBox(width: 20),
-             Icon(Icons.search, color: searchTextColor ),
-      
+            Icon(Icons.search, color: searchTextColor),
+
             const SizedBox(width: 10),
-      
+
             Expanded(
               child: TextField(
-                cursorColor: searchTextColor ,
-                 style:  TextStyle(
-                 color: searchTextColor,
-                ),
+                cursorColor: searchTextColor,
+                style: TextStyle(color: searchTextColor),
                 decoration: InputDecoration(
                   hintText: "Search movie and tv series...",
-                  hintStyle: TextStyle(
-                    color: searchTextColor,
-                    fontSize: 14
-                  ),
+                  hintStyle: TextStyle(color: searchTextColor, fontSize: 14),
                   border: InputBorder.none,
                 ),
               ),
             ),
-      
-             const SizedBox(width: 10),
+
+            const SizedBox(width: 10),
           ],
         ),
       ),

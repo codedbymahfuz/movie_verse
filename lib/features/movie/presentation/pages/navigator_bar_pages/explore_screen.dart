@@ -1,70 +1,134 @@
 import 'package:flutter/material.dart';
-import 'package:movie_verse/features/movie/presentation/widgets/movie_card.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/features/movie/presentation/widgets/movie_grid_view.dart';
 
-class ExploreScreen extends StatelessWidget {
+class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
+
+  @override
+  State<ExploreScreen> createState() => _ExploreScreenState();
+}
+
+class _ExploreScreenState extends State<ExploreScreen> {
+
+  String? selectedGenre;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      
       children: [
         const SizedBox(height: 10),
 
         Wrap(
-          spacing: 16,
+          spacing: 10,
           runSpacing: 10,
           children: [
-            _genreItem("Sci-Fi"),
+            _genreItem(
+              title: "Sci-Fi",
+              seletColor: selectedGenre == "Sci-Fi",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Sci-Fi";
+                });
+              },
+            ),
 
-            _genreItem("Thriller"),
+            _genreItem(
+              title: "Thriller",
+              seletColor: selectedGenre == "Thriller",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Thriller";
+                });
+              },
+            ),
 
-            _genreItem("Drama"),
+            _genreItem(
+              title: "Drama",
+              seletColor: selectedGenre == "Drama",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Drama";
+                });
+              },
+            ),
 
-            _genreItem("Action"),
+            _genreItem(
+              title: "Action",
+              seletColor: selectedGenre == "Action",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Action";
+                });
+              },
+            ),
 
-            _genreItem("Romance"),
+            _genreItem(
+              title: "Romance",
+              seletColor: selectedGenre == "Romance",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Romance";
+                });
+              },
+            ),
 
-            _genreItem("Comedy"),
+            _genreItem(
+              title: "Comedy",
+              seletColor: selectedGenre == "Comedy",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Comedy";
+                });
+              },
+            ),
 
-            _genreItem("Horror"),
+            _genreItem(
+              title: "Horror",
+              seletColor: selectedGenre == "Horror",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Horror";
+                });
+              },
+            ),
 
-            _genreItem("Adventure"),
+            _genreItem(
+              title: "Adventure",
+              seletColor: selectedGenre == "Adventure",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Adventure";
+                });
+              },
+            ),
 
-            _genreItem("Mystery"),
+            _genreItem(
+              title: "Mystery",
+              seletColor: selectedGenre == "Mystery",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Mystery";
+                });
+              },
+            ),
 
-            _genreItem("Animation"),
-
+            _genreItem(
+              title: "Animation",
+              seletColor: selectedGenre == "Animation",
+              onTap: () {
+                setState(() {
+                  selectedGenre = "Animation";
+                });
+              },
+            ),
           ],
         ),
-           const SizedBox(height: 20),
-           Expanded(
-          child: LayoutBuilder(
-            builder: (context, constrains) {
-              int crossAxisCount;
-
-              if (constrains.maxWidth < 600) {
-                crossAxisCount = 3;
-              } else if (constrains.maxWidth < 900) {
-                crossAxisCount = 3;
-              } else {
-                crossAxisCount = 5;
-              }
-
-              return GridView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                itemCount: 40,
-
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 0.65,
-                ),
-                itemBuilder: (context, index) {
-                  return MovieCard();
-                },
-              );
+        const SizedBox(height: 20),
+        Expanded(
+          child: MovieGridView(
+            onTap: (index) {
+              debugPrint("Explore $index");
             },
           ),
         ),
@@ -72,21 +136,26 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  Widget _genreItem(String title) {
+  Widget _genreItem({
+    required String title,
+    required VoidCallback onTap,
+    required bool seletColor,
+  }) {
     return GestureDetector(
-      onTap: () {
-        debugPrint("Click $title");
-      },
+      onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         decoration: BoxDecoration(
-          color: const Color(0xff15181e),
+          color: seletColor ? AppColors.warmAmber : AppColors.midNight,
           borderRadius: BorderRadius.circular(40),
-          border: Border.all(color: const Color(0xff292d35)),
+          border: Border.all(color: AppColors.secondary),
         ),
         child: Text(
           title,
-          style: const TextStyle(color: Colors.white70, fontSize: 15),
+          style: TextStyle(
+            color: AppColors.primary.withValues(alpha: 0.7),
+            fontSize: 15,
+          ),
         ),
       ),
     );

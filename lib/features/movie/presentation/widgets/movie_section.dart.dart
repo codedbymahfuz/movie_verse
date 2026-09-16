@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
 import 'package:movie_verse/features/movie/presentation/widgets/movie_card.dart';
 
 class MovieSection extends StatelessWidget {
   final String title;
   final int itemCount;
   final VoidCallback moreOnPressed;
-  const MovieSection({super.key, required this.title, required this.itemCount, required this.moreOnPressed});
+  final bool ratingShow;
+  const MovieSection({
+  super.key, 
+  required this.title, 
+  required this.itemCount, 
+  required this.moreOnPressed,
+  this.ratingShow = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +24,7 @@ class MovieSection extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 94),
+                color: AppColors.primary.withValues(alpha: 94),
                 fontWeight: FontWeight.w500,
                 letterSpacing: 0.7,
               ),
@@ -29,7 +37,7 @@ class MovieSection extends StatelessWidget {
               child: Text(
                 "More",
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 94),
+                  color: AppColors.primary.withValues(alpha: 94),
                   fontWeight: FontWeight.w500,
                   letterSpacing: 0.7,
                 ),
@@ -47,7 +55,17 @@ class MovieSection extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(width: 140, child: MovieCard()),
+                child: SizedBox(
+                  width: 140, 
+                   child: GestureDetector(
+                    onTap: () {
+                      debugPrint("Selected $index");
+                    },
+                    child: MovieCard(
+                      ratingShow: ratingShow,
+                    ),
+                   )
+                  ),
               );
             },
           ),
