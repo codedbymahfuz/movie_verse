@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/features/movie/presentation/pages/movie_details_screen.dart';
+import 'package:movie_verse/features/movie/presentation/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/features/movie/presentation/widgets/movie_grid_view.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -128,7 +130,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
         Expanded(
           child: MovieGridView(
             onTap: (index) {
-              debugPrint("Explore $index");
+             BottomSheetHelper.show(
+                  context: context,
+                  backgroundColor: AppColors.bgDeep,
+                  child: MovieDetailsBottomSheet(
+                    title: "Spider- Man - $index",
+                    overview: "movie.overview",
+                    rating: 2.5,
+                  ),
+                );
             },
           ),
         ),
@@ -152,10 +162,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
         ),
         child: Text(
           title,
-          style: TextStyle(
-            color: AppColors.primary.withValues(alpha: 0.7),
-            fontSize: 15,
-          ),
+          style: 
+          TextTheme.of(context).labelLarge?.copyWith(
+             color: AppColors.primary.withValues(alpha: 0.7),   
+              ),
         ),
       ),
     );

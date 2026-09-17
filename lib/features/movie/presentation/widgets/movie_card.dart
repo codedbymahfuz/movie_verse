@@ -3,7 +3,8 @@ import 'package:movie_verse/core/theme/app_colors.dart';
 
 class MovieCard extends StatelessWidget {
   final bool ratingShow;
-  const MovieCard({super.key, this.ratingShow = true});
+  final bool movieNameShow;
+  const MovieCard({super.key, this.ratingShow = true, this.movieNameShow = true});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +35,13 @@ class MovieCard extends StatelessWidget {
 
         const SizedBox(height: 5),
 
-        Text(
+        movieNameShow ?  Text(
           "Movie test",
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: AppColors.primary.withValues(alpha: 0.7)),
-        ),
+          style: TextTheme.of(context).bodyMedium,
+          
+        ) : const SizedBox.shrink()
       ],
     );
   }

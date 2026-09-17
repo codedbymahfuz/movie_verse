@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_pages/explore_screen.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_pages/home_screen.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_pages/search_screen.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_pages/tv_show_screen.dart';
+import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/explore_screen.dart';
+import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/home_screen.dart';
+import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/search_screen.dart';
+import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/tv_show_screen.dart';
 
 class BotomNavigationBar extends StatefulWidget {
   const BotomNavigationBar({super.key});
@@ -27,11 +27,12 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
       backgroundColor: AppColors.bgDeep,
       appBar: AppBar(
         backgroundColor: AppColors.bgDeep,
-        elevation: 5,
-        title: Text("Cine Verse",
-          style: TextStyle(
+        elevation: 25,
+        title: Text(
+          "Cine Verse",
+          style: TextTheme.of(context).titleLarge?.copyWith(
             color: AppColors.appBarTitleColor,
-          ),
+           ),
         ),
          centerTitle: true,
         ),
@@ -76,9 +77,10 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
             ),
             Text(
               label,
-              style: TextStyle(
+              style: 
+              TextTheme.of(context).labelLarge?.copyWith(
                 color: isSelected ? AppColors.warmAmber : AppColors.secondary,
-              ),
+              ),            
             ),
           ],
         ),

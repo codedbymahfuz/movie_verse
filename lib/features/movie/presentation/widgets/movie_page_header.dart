@@ -27,12 +27,10 @@ class MoviePageHeader extends StatelessWidget {
           ),
            Text(
             title,
-            style: TextStyle(
-              color: AppColors.primary.withValues(alpha: 0.7), 
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.7,
-            ),
+            style: TextTheme.of(context).titleLarge?.copyWith(
+             fontSize: 20,
+             color: AppColors.primary.withValues(alpha: 0.7),
+            )
           ),
         ],
       ),

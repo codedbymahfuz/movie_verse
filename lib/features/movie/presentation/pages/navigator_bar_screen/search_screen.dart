@@ -13,21 +13,24 @@ class SearchScreen extends StatelessWidget {
         Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 350),
-            child: _searchingBoxText(AppColors.secondary),
+            child: _searchingBoxText(
+              AppColors.secondary, 
+               context,
+              ),
           ),
         ),
 
         const SizedBox(height: 30),
 
-        const Text(
+        Text(
           "No Data Found",
-          style: TextStyle(fontSize: 15, color: AppColors.secondary),
+          style: TextTheme.of(context).labelMedium,
         ),
       ],
     );
   }
 
-  Widget _searchingBoxText(Color searchTextColor) {
+  Widget _searchingBoxText(Color searchTextColor, BuildContext context) {
     return Center(
       child: Container(
         height: 50,
@@ -50,7 +53,7 @@ class SearchScreen extends StatelessWidget {
                 style: TextStyle(color: searchTextColor),
                 decoration: InputDecoration(
                   hintText: "Search movie and tv series...",
-                  hintStyle: TextStyle(color: searchTextColor, fontSize: 14),
+                  hintStyle: TextTheme.of(context).labelMedium,
                   border: InputBorder.none,
                 ),
               ),

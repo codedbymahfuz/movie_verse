@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:movie_verse/core/theme/app_colors.dart';
 import 'package:movie_verse/features/movie/presentation/widgets/movie_card.dart';
 
 class MovieSection extends StatelessWidget {
   final String title;
   final int itemCount;
   final VoidCallback moreOnPressed;
+  final void Function(int index) onTap;
   final bool ratingShow;
   const MovieSection({
   super.key, 
   required this.title, 
   required this.itemCount, 
   required this.moreOnPressed,
-  this.ratingShow = true,
+  this.ratingShow = true, required this.onTap,
   });
 
   @override
@@ -23,11 +23,7 @@ class MovieSection extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
-                color: AppColors.primary.withValues(alpha: 94),
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.7,
-              ),
+              style: TextTheme.of(context).titleMedium,
             ),
 
             Spacer(),
@@ -36,11 +32,7 @@ class MovieSection extends StatelessWidget {
               onPressed: moreOnPressed,
               child: Text(
                 "More",
-                style: TextStyle(
-                  color: AppColors.primary.withValues(alpha: 94),
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.7,
-                ),
+                style: TextTheme.of(context).titleMedium
               ),
             ),
           ],
@@ -58,9 +50,7 @@ class MovieSection extends StatelessWidget {
                 child: SizedBox(
                   width: 140, 
                    child: GestureDetector(
-                    onTap: () {
-                      debugPrint("Selected $index");
-                    },
+                    onTap: () => onTap(index),
                     child: MovieCard(
                       ratingShow: ratingShow,
                     ),

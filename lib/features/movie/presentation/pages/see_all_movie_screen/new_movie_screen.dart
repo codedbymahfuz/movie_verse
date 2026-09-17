@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/features/movie/presentation/pages/movie_details_screen.dart';
+import 'package:movie_verse/features/movie/presentation/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/features/movie/presentation/widgets/movie_grid_view.dart';
 import 'package:movie_verse/features/movie/presentation/widgets/movie_page_header.dart';
 
@@ -25,7 +27,15 @@ class _NewMovieScreenState extends State<NewMovieScreen> {
           Expanded(
             child: MovieGridView(
               onTap: (index) {
-                debugPrint("Latest movie $index");
+                BottomSheetHelper.show(
+                  context: context,
+                  backgroundColor: AppColors.bgDeep,
+                  child: MovieDetailsBottomSheet(
+                    title: "Spider- Man - $index",
+                    overview: "movie.overview",
+                    rating: 2.5,
+                  ),
+                );
               },
             ),
           ),

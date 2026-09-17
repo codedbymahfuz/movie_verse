@@ -16,4 +16,6 @@ import 'package:flutter/material.dart';
 
  static const Color borderDark = Color(0xFF1A1D24);
 
+ static const Color coolGray = Color(0xFFC7CAD1);
+
 }
