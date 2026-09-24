@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 import 'package:movie_verse/core/service/network_response.dart';
 
 class ApiService {
-  static Future<NetworkResponse> getMovie(String uri) async {
+  static Future<NetworkResponse> getRequest(String uri,) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
     try {
