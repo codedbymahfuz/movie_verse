@@ -11,5 +11,7 @@ abstract class MovieRemoteDataSource {
   Future<MovieModel> getTrendingAll ({required String timeWindow});
 
   Future<MovieModel> getNewMovie ({required int page});
+
+  Future<MovieModel> getGenreMovie ({required int genre, required int page});
   
 }

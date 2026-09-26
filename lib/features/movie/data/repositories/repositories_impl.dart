@@ -32,4 +32,9 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<MovieEntity> getUpNewMovie({required int page}) async {
     return await remoteDataSource.getNewMovie(page: page);
   }
+
+  @override
+  Future<MovieEntity> getGenreMovie({required int genre, required int page}) async {
+    return await remoteDataSource.getGenreMovie(genre: genre, page: page);
+  }
 }

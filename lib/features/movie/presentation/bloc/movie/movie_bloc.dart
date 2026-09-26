@@ -1,3 +1,4 @@
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/utils/pagination_util.dart';
 import 'package:movie_verse/features/movie/domain/repositories/repositories.dart';
@@ -10,8 +11,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   int topRatedPage = 1;
   int upcomingPage = 1;
   int newMoviePage = 1;
+  
   MovieBloc({required this.repository}) : super(MovieInitialState()) {
-
     on<FetchPopularMovieEvent>((event, emit) async {
       popularPage = 1;
 
@@ -179,6 +180,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         emit(MovieErrorState(errorMessage: e.toString()));
       }
     });
- 
+
+   
   }
 }

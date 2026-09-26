@@ -9,8 +9,10 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
 
   int popularTvShowPage = 1;
   int topRatedTvShowPage = 1;
+  int genreTvShowPage = 1;
 
   TvShowBloc({required this.repository}) : super(TvShowInitialState()) {
+
     on<FetchPopularTvShowEvent>((event, emit) async {
       popularTvShowPage = 1;
 
@@ -40,7 +42,7 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
       try {
         popularTvShowPage++;
 
-       await PaginationUtil.fetchMoreTvShow(
+        await PaginationUtil.fetchMoreTvShow(
           emit: emit,
           currentState: currentState,
           tvShowFuture: repository.getPopularTvShow(page: popularTvShowPage),
@@ -85,7 +87,7 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
       try {
         topRatedTvShowPage++;
 
-       await PaginationUtil.fetchMoreTvShow(
+        await PaginationUtil.fetchMoreTvShow(
           emit: emit,
           currentState: currentState,
           tvShowFuture: repository.getTopRatedTvShow(page: topRatedTvShowPage),
@@ -101,5 +103,62 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
         );
       }
     });
+
+    on<FetchGenreTvShowEvent>((event, emit) async {
+
+      emit(TvShowLoadingState());
+
+      genreTvShowPage = 1;
+
+      try {
+        final genreTvShowList = await repository.getGenreTvShow(
+          genre: event.genre,
+          page: genreTvShowPage,
+        );
+
+        
+
+        emit(
+          TvShowLoadedState(
+            tvShowList: genreTvShowList,
+            hasMore: genreTvShowList.results.isNotEmpty,
+          ),
+        );
+      } catch (e) {
+        emit(TvShowErrorState(errorMessage: e.toString()));
+      }
+    });
+
+    on<FetchMoreGenreTvShowEvent>((event, emit) async {
+      if (state is! TvShowLoadedState) return;
+
+      final currentState = state as TvShowLoadedState;
+
+     
+
+      try {
+        genreTvShowPage++;
+
+        await PaginationUtil.fetchMoreTvShow(
+          emit: emit,
+          currentState: currentState,
+          tvShowFuture: repository.getGenreTvShow(
+            genre: event.genre,
+            page: genreTvShowPage,
+          ),
+        );
+      } catch (e) {
+        genreTvShowPage--;
+
+        emit(
+          TvShowLoadedState(
+            tvShowList: currentState.tvShowList,
+            hasMore: currentState.hasMore,
+            isLoadingMore: false,
+          ),
+        );
+      }
+    });
+  
   }
 }

@@ -5,15 +5,14 @@ import 'package:movie_verse/features/tv_show/data/model/tv_show_model.dart';
 
 class TvShowRemoteDataSourceImpl extends TvShowRemoteDataSource {
   @override
-  
   Future<TvShowModel> getPopularTvShow({required int page}) async {
-    final uri = "${TmdbApiEndpoints.popularTvShow}${TmdbApiEndpoints.apiKey}&page=$page";
+    final uri =
+        "${TmdbApiEndpoints.popularTvShow}${TmdbApiEndpoints.apiKey}&page=$page";
 
     final response = await ApiService.getRequest(uri);
 
     if (response.isSuccess) {
-      
-    return TvShowModel.fromJson(response.responsiveData);
+      return TvShowModel.fromJson(response.responsiveData);
     }
 
     throw Exception("Something Wrong");
@@ -31,5 +30,22 @@ class TvShowRemoteDataSourceImpl extends TvShowRemoteDataSource {
     }
 
     throw Exception("Something Wrong");
+  }
+
+  @override
+  Future<TvShowModel> getGenreTvShow({
+    required int genre,
+    required int page,
+  }) async {
+    final uri =
+        "${TmdbApiEndpoints.tvGenre}$genre&api_key=acaff0fc38f0d35df3630c1f474b6081&page=$page";
+
+    final response = await ApiService.getRequest(uri);
+
+    if (response.isSuccess) {
+      return TvShowModel.fromJson(response.responsiveData);
+    }
+
+    throw Exception(response.errorMessage);
   }
 }

@@ -22,9 +22,10 @@ class ResultModel extends MovieResultEntity {
       posterPath: json['poster_path'],
       originalTitle: json['original_title'] ?? '',
       releaseDate: json['release_date'],
-      voteAverage: json["vote_average"],
+      voteAverage: (json['vote_average'] as num?)?.toDouble() ?? 0.0,  
       genreIds: json['genre_ids'] != null
-        ? List<int>.from(json["genre_ids"].map((x)=> x as int)): []
+        ? List<int>.from(json['genre_ids'])
+        : [],
     );
   }
 }

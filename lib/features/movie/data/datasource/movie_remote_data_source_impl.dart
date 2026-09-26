@@ -71,4 +71,22 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
     throw Exception("Something Wrong");
   }
+
+  @override
+  Future<MovieModel> getGenreMovie({
+    required int genre,
+    required int page,
+  }) async {
+    final uri =
+        "${TmdbApiEndpoints.movieGenre}$genre&api_key=acaff0fc38f0d35df3630c1f474b6081&page=$page";
+
+      
+    final response = await ApiService.getRequest(uri);
+
+    if (response.isSuccess) {
+      return MovieModel.fromJson(response.responsiveData);
+    }
+
+    throw Exception(response.errorMessage);
+  }
 }

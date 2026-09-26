@@ -21,5 +21,9 @@
   static String topRaterTvShow = '$_baseUrl/tv/top_rated';
 
   static const String imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
+
+  static const String movieGenre = '$_baseUrl/discover/movie?with_genres=';
+
+  static const String tvGenre = '$_baseUrl/discover/tv?with_genres=';
   
  }

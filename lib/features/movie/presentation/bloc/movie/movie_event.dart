@@ -21,3 +21,5 @@ class TrendingAllEvent extends MovieEvent {
 
   TrendingAllEvent({required this.timeWindow});
 }
+
+

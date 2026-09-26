@@ -16,4 +16,9 @@ class TvShowRepositoryImpl implements TvShowRepository {
   Future<TvShowEntity> getTopRatedTvShow({required int page}) async {
     return await remoteDataSource.getTopRatedTvShow(page: page);
   }
+
+  @override
+  Future<TvShowEntity> getGenreTvShow({required int genre, required int page}) async { 
+    return await remoteDataSource.getGenreTvShow(genre: genre, page: page);
+  }
 }

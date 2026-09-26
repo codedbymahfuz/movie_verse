@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
+import 'package:movie_verse/features/movie/presentation/bloc/explore/movie_explore_state.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_state.dart';
 import 'package:movie_verse/features/tv_show/domain/entities/tv_show_entity.dart';
 import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show_state.dart';
@@ -79,4 +80,45 @@ class PaginationUtil {
       );
     
   }
+
+  static Future<void> fetchMoreGenreMovies({
+    required Emitter<MovieExploreState> emit,
+    required MovieExploreLoaded currentState,
+    required Future<MovieEntity> movieFuture,
+  }) async {
+    if (currentState.isLoadingMore || !currentState.hasMore) {
+      return;
+    }
+
+    emit(
+      MovieExploreLoaded(
+        movieList: currentState.movieList,
+        hasMore: currentState.hasMore,
+        isLoadingMore: true,
+      ),
+    );
+
+    
+      final newMovieList = await movieFuture;
+
+      final updatedMovieResult = [
+        ...currentState.movieList.results,
+        ...newMovieList.results,
+      ];
+
+      final updatedMovieList = MovieEntity(results: updatedMovieResult);
+
+      emit(
+        MovieExploreLoaded(
+          movieList: updatedMovieList,
+          hasMore: newMovieList.results.isNotEmpty,
+          isLoadingMore: false,
+        ),
+      );
+   
+  }
+
+
+
+
 }
