@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
  static const Color primary = Colors.white;
 
+ static  Color primaryOverlay = AppColors.primary.withValues(alpha: 94);
+
  static const Color bgDeep = Color(0xFF0A0C10);
 
  static const Color appBarTitleColor = Color(0xFFD4A2AE);
@@ -17,5 +19,7 @@ import 'package:flutter/material.dart';
  static const Color borderDark = Color(0xFF1A1D24);
 
  static const Color coolGray = Color(0xFFC7CAD1);
+
+ static const Color purple = Colors.purple;
 
 }

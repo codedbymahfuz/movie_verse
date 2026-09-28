@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
-import 'package:movie_verse/features/movie/presentation/pages/movie_details_screen.dart';
-import 'package:movie_verse/features/movie/presentation/widgets/bottom_sheet_helper.dart';
-import 'package:movie_verse/features/movie/presentation/widgets/movie_grid_view.dart';
-import 'package:movie_verse/features/movie/presentation/widgets/movie_page_header.dart';
+import 'package:movie_verse/core/widgets/media_details_screen.dart';
+import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
+import 'package:movie_verse/core/widgets/media_grid_view.dart';
+import 'package:movie_verse/core/widgets/page_header.dart';
 
-class TopRatedMovieScreen extends StatelessWidget {
-  const TopRatedMovieScreen({super.key});
+class UpComingMovieAllScreen extends StatelessWidget {
+  const UpComingMovieAllScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +17,16 @@ class TopRatedMovieScreen extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
 
-          MoviePageHeader(title: "Top Rated Movie"),
+          PageHeader(title: "UpComing Movie"),
 
           Expanded(
-            child: MovieGridView(
+            child: MediaGridView(
+              ratingShow: false,
               onTap: (index) {
                 BottomSheetHelper.show(
                   context: context,
                   backgroundColor: AppColors.bgDeep,
-                  child: MovieDetailsBottomSheet(
+                  child: MediaDetailsBottomSheet(
                     title: "Spider- Man - $index",
                     overview: "movie.overview",
                     rating: 2.5,

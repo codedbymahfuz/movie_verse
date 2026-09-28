@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/text_theme.dart';
-import 'package:movie_verse/features/movie/presentation/pages/botom_navigation_bar_screen.dart';
+import 'package:movie_verse/app/pages/main_navigation_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

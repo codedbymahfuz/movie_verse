@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/explore_screen.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/home_screen.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/search_screen.dart';
-import 'package:movie_verse/features/movie/presentation/pages/navigator_bar_screen/tv_show_screen.dart';
+import 'package:movie_verse/home/presentation/pages/home_screen.dart';
+import 'package:movie_verse/features/search/presentation/pages/search_screen.dart';
+
+import 'package:movie_verse/features/movie/presentation/pages/movie_explore_screen.dart';
+import 'package:movie_verse/features/tv_show/presentation/pages/tv_show_explore_screen.dart';
 
 class BotomNavigationBar extends StatefulWidget {
   const BotomNavigationBar({super.key});
@@ -17,8 +18,10 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    ExploreScreen(),
-    TvShowScreen(),
+    MovieExploreScreen(),
+   
+    TvShowExploreScreen(),
+    
     SearchScreen()
   ];
   @override
@@ -50,7 +53,7 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
         child: Row(
           children: [
             _buildNavigationBar(Icons.home, "Home", 0),
-            _buildNavigationBar(Icons.explore, "Explore", 1),
+            _buildNavigationBar(Icons.movie, "Movie", 1),
             _buildNavigationBar(Icons.tv, "Tv", 2),
             _buildNavigationBar(Icons.search, "Search", 3),
           ],

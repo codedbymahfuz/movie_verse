@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
 
-class MovieCard extends StatelessWidget {
+class MediaCard extends StatelessWidget {
   final bool ratingShow;
   final bool movieNameShow;
-  const MovieCard({super.key, this.ratingShow = true, this.movieNameShow = true});
+  const MediaCard({super.key, this.ratingShow = true, this.movieNameShow = true});
 
   @override
   Widget build(BuildContext context) {

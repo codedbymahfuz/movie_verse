@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
-import 'package:movie_verse/features/movie/presentation/widgets/movie_card.dart';
+import 'package:movie_verse/core/widgets/media_card.dart';
 
-class MovieDetailsBottomSheet extends StatelessWidget {
+class MediaDetailsBottomSheet extends StatelessWidget {
   final String title;
   final String overview;
   final double rating;
 
-  const MovieDetailsBottomSheet({
+  const MediaDetailsBottomSheet({
     super.key,
     required this.title,
     required this.overview,
@@ -28,7 +28,7 @@ class MovieDetailsBottomSheet extends StatelessWidget {
 
           SizedBox(
             height: 200,
-            child: MovieCard(ratingShow: false, movieNameShow: false),
+            child: MediaCard(ratingShow: false, movieNameShow: false),
           ),
 
           const SizedBox(height: 7),
@@ -41,7 +41,12 @@ class MovieDetailsBottomSheet extends StatelessWidget {
 
           const SizedBox(height: 15),
 
-          _genereName("MySelf", context),
+          Wrap(
+            spacing: 10,
+            children: List.generate(4, (index) {
+              return _genereName("my test", context);
+            }),
+          ),
 
           const SizedBox(height: 15),
 
@@ -62,11 +67,7 @@ class MovieDetailsBottomSheet extends StatelessWidget {
 
         const SizedBox(width: 7),
 
-        Icon(
-          Icons.star, 
-          color: AppColors.warmAmber, 
-          size: 17,
-        ),
+        Icon(Icons.star, color: AppColors.warmAmber, size: 17),
 
         const SizedBox(width: 5),
 
@@ -88,7 +89,7 @@ class MovieDetailsBottomSheet extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.cancel_rounded, color: AppColors.primary, size: 30),
+          icon: Icon(Icons.cancel_rounded, color: AppColors.coolGray, size: 30),
         ),
       ],
     );

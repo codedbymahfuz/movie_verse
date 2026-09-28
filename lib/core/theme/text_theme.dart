@@ -6,14 +6,14 @@ class AppTextTheme {
     return TextTheme(
       
       titleLarge: TextStyle(
-        color: AppColors.primary.withValues(alpha: 93),
+        color: AppColors.primaryOverlay,
         fontSize: 25,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.5,
       ),
 
       titleMedium: TextStyle(
-        color: AppColors.primary.withValues(alpha: 94),
+        color: AppColors.primaryOverlay,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.7,
       ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
 
-class MoviePageHeader extends StatelessWidget {
+class PageHeader extends StatelessWidget {
   final String title;
-  const MoviePageHeader({super.key, required this.title});
+  const PageHeader({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

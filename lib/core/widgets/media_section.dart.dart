@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:movie_verse/features/movie/presentation/widgets/movie_card.dart';
+import 'package:movie_verse/core/widgets/media_card.dart';
 
-class MovieSection extends StatelessWidget {
+class MediaSection extends StatelessWidget {
   final String title;
   final int itemCount;
   final VoidCallback moreOnPressed;
   final void Function(int index) onTap;
   final bool ratingShow;
-  const MovieSection({
+  const MediaSection({
   super.key, 
   required this.title, 
   required this.itemCount, 
@@ -40,7 +40,7 @@ class MovieSection extends StatelessWidget {
         const SizedBox(height: 5),
 
         SizedBox(
-          height: 200,
+          height: 250,      
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: itemCount,
@@ -51,7 +51,7 @@ class MovieSection extends StatelessWidget {
                   width: 140, 
                    child: GestureDetector(
                     onTap: () => onTap(index),
-                    child: MovieCard(
+                    child: MediaCard(
                       ratingShow: ratingShow,
                     ),
                    )

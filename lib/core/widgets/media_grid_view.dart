@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:movie_verse/features/movie/presentation/widgets/movie_card.dart';
+import 'package:movie_verse/core/widgets/media_card.dart';
 
-class MovieGridView extends StatelessWidget {
+class MediaGridView extends StatelessWidget {
   final bool ratingShow;
   final void Function(int index) onTap;
-  const MovieGridView({super.key, required this.onTap, this.ratingShow = true});
+  const MediaGridView({super.key, required this.onTap, this.ratingShow = true});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (context, constrains) {
+      builder: (context, constraints) {
         int crossAxisCount;
 
-        if (constrains.maxWidth < 900) {
+        if (constraints.maxWidth < 500) {
+          crossAxisCount = 2;
+        } else if (constraints.maxWidth < 1024) {
           crossAxisCount = 3;
         } else {
           crossAxisCount = 5;
@@ -31,9 +33,7 @@ class MovieGridView extends StatelessWidget {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () => onTap(index),
-              child: MovieCard(
-                ratingShow: ratingShow,
-              ),
+              child: MediaCard(ratingShow: ratingShow),
             );
           },
         );
