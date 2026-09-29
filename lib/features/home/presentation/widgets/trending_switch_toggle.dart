@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_verse/home/presentation/cubit/trending_tab_cubit.dart';
+import 'package:movie_verse/features/home/presentation/cubit/trending_tab_cubit.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
 
 class TrendingTabSwitchToggle extends StatelessWidget {

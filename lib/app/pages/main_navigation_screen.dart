@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
-import 'package:movie_verse/home/presentation/pages/home_screen.dart';
+import 'package:movie_verse/features/home/presentation/pages/home_screen.dart';
 import 'package:movie_verse/features/search/presentation/pages/search_screen.dart';
 
 import 'package:movie_verse/features/movie/presentation/pages/movie_explore_screen.dart';

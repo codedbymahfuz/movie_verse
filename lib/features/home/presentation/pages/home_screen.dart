@@ -1,14 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_verse/home/presentation/cubit/trending_tab_cubit.dart';
-import 'package:movie_verse/home/presentation/widgets/trending_switch_toggle.dart';
+import 'package:movie_verse/features/home/presentation/cubit/trending_tab_cubit.dart';
+import 'package:movie_verse/features/home/presentation/widgets/trending_switch_toggle.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/core/widgets/media_card.dart';
-import 'package:movie_verse/home/presentation/widgets/movie_section.dart';
-import 'package:movie_verse/home/presentation/widgets/tv_show_section.dart';
+import 'package:movie_verse/features/home/presentation/widgets/movie_section.dart';
+import 'package:movie_verse/features/home/presentation/widgets/tv_show_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/cubit/genre_cubit.dart';
-import 'package:movie_verse/home/presentation/cubit/trending_tab_cubit.dart';
+import 'package:movie_verse/features/home/presentation/cubit/trending_tab_cubit.dart';
 import 'package:movie_verse/my_app.dart';
 
 void main() {
