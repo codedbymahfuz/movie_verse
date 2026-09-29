@@ -52,7 +52,8 @@ class MediaSection extends StatelessWidget {
                    child: GestureDetector(
                     onTap: () => onTap(index),
                     child: MediaCard(
-                      ratingShow: ratingShow,
+                      title: "",
+                      imageUrl: "",
                     ),
                    )
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/core/widgets/media_card.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/core/widgets/media_grid_view.dart';
@@ -13,6 +14,8 @@ class TopRatedTvShowAllScreen extends StatefulWidget {
 }
 
 class _TopRatedTvShowAllScreenState extends State<TopRatedTvShowAllScreen> {
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +29,23 @@ class _TopRatedTvShowAllScreenState extends State<TopRatedTvShowAllScreen> {
 
           Expanded(
             child: MediaGridView(
+              items: [1],
               onTap: (index) {
                 BottomSheetHelper.show(
                   context: context,
-                  backgroundColor: Color(0xFF0A0C10),
+                  backgroundColor: AppColors.bgDeep,
                   child: MediaDetailsBottomSheet(
-                    title: "Spider- Man FJJFGJFGJFGJGFJGJGFFHFHFHFH - $index",
-                    overview: "movie.overview ",
+                    title: "Spider- Man - $index",
+                    overview: "movie.overview",
                     rating: 2.5,
                   ),
+                );
+              },
+               itemBuilder: (item) {
+                return MediaCard(
+                  title: "ttt", 
+                  imageUrl: "", 
+                  rating: 1.0,
                 );
               },
             ),

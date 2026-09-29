@@ -28,7 +28,11 @@ class MediaDetailsBottomSheet extends StatelessWidget {
 
           SizedBox(
             height: 200,
-            child: MediaCard(ratingShow: false, movieNameShow: false),
+            child: MediaCard(
+              title: '', 
+              imageUrl: '',
+              titleShow: false,
+            ),
           ),
 
           const SizedBox(height: 7),

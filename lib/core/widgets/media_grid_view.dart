@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:movie_verse/core/widgets/media_card.dart';
 
-class MediaGridView extends StatelessWidget {
-  final bool ratingShow;
-  final void Function(int index) onTap;
-  const MediaGridView({super.key, required this.onTap, this.ratingShow = true});
+class MediaGridView<T> extends StatelessWidget {
+  final List<T> items;
+  final Widget Function(T item) itemBuilder;
+  final void Function(T item) onTap;
+  const MediaGridView({
+    super.key,
+    required this.items,
+    required this.itemBuilder,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,7 @@ class MediaGridView extends StatelessWidget {
 
         return GridView.builder(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          itemCount: 40,
+          itemCount: items.length,
 
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
@@ -31,9 +36,11 @@ class MediaGridView extends StatelessWidget {
             childAspectRatio: 0.65,
           ),
           itemBuilder: (context, index) {
+            final item = items[index];
+
             return GestureDetector(
-              onTap: () => onTap(index),
-              child: MediaCard(ratingShow: ratingShow),
+              onTap: () => onTap(item),
+              child: itemBuilder(item),
             );
           },
         );

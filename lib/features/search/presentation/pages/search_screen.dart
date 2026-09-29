@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/features/search/presentation/pages/search_result_screen.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -13,18 +14,18 @@ class SearchScreen extends StatelessWidget {
         Center(
           child: ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 350),
-            child: _searchingBoxText(
-              AppColors.secondary, 
-               context,
-              ),
+            child: _searchingBoxText(AppColors.secondary, context),
           ),
         ),
 
         const SizedBox(height: 30),
 
-        Text(
-          "No Data Found",
-          style: TextTheme.of(context).labelMedium,
+        Text("No Data Found", style: TextTheme.of(context).labelMedium),
+
+        Expanded(
+          child: SearchResultScreen(
+            queryItem: 4,
+          ),
         ),
       ],
     );
@@ -50,6 +51,9 @@ class SearchScreen extends StatelessWidget {
             Expanded(
               child: TextField(
                 cursorColor: searchTextColor,
+                onChanged: (query) {
+                
+                },
                 style: TextStyle(color: searchTextColor),
                 decoration: InputDecoration(
                   hintText: "Search movie and tv series...",

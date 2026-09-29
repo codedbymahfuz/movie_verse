@@ -4,6 +4,7 @@ import 'package:movie_verse/core/cubit/genre_cubit.dart';
 import 'package:movie_verse/core/widgets/genre_button.dart';
 import 'package:movie_verse/core/widgets/genre_girdview.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/core/widgets/media_card.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/core/widgets/media_grid_view.dart';
@@ -18,10 +19,12 @@ class MovieExploreScreen extends StatefulWidget {
 
 class _MovieExploreScreenState extends State<MovieExploreScreen> {
 
-  String? selectedGenre;
+  
 
   @override
   Widget build(BuildContext context) {
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -61,6 +64,7 @@ class _MovieExploreScreenState extends State<MovieExploreScreen> {
         
         Expanded(
           child: MediaGridView(
+            items: [1],
             onTap: (index) {
               BottomSheetHelper.show(
                 context: context,
@@ -72,6 +76,13 @@ class _MovieExploreScreenState extends State<MovieExploreScreen> {
                 ),
               );
             },
+             itemBuilder: (item) {
+
+              return MediaCard(
+              title: "", imageUrl: "", rating: 1.0);
+               
+             }, 
+           
           ),
         ),
       ],
