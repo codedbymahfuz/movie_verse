@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/features/search/presentation/pages/search_result_screen.dart';
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 18),
+
+        Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 350),
+            child: _searchingBoxText(AppColors.secondary, context),
+          ),
+        ),
+
+        const SizedBox(height: 30),
+
+        Text("No Data Found", style: TextTheme.of(context).labelMedium),
+
+        Expanded(
+          child: SearchResultScreen(
+            queryItem: 4,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _searchingBoxText(Color searchTextColor, BuildContext context) {
+    return Center(
+      child: Container(
+        height: 50,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.midNight,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.secondary),
+        ),
+        child: Row(
+          children: [
+            const SizedBox(width: 20),
+            Icon(Icons.search, color: searchTextColor),
+
+            const SizedBox(width: 10),
+
+            Expanded(
+              child: TextField(
+                cursorColor: searchTextColor,
+                onChanged: (query) {
+                
+                },
+                style: TextStyle(color: searchTextColor),
+                decoration: InputDecoration(
+                  hintText: "Search movie and tv series...",
+                  hintStyle: TextTheme.of(context).labelMedium,
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+
+            const SizedBox(width: 10),
+          ],
+        ),
+      ),
+    );
+  }
+}
