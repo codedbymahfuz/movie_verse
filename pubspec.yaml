@@ -1,3 +1,4 @@
+
 name: movie_verse
 description: "A new Flutter project."
 publish_to: 'none'
@@ -16,6 +17,8 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_dotenv: ^6.0.1
   carousel_slider: ^5.1.2
+  bloc_concurrency: ^0.3.0
+  stream_transform: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +28,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+

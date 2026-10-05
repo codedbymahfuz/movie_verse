@@ -9,10 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: AppTextTheme.textTheme(),
-        useMaterial3: true,
-      ),
+      theme: ThemeData(textTheme: AppTextTheme.textTheme(), useMaterial3: true),
       home: BotomNavigationBar(),
     );
   }
