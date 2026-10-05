@@ -1,13 +1,14 @@
 import 'package:movie_verse/core/constants/movie_api_endpoints.dart';
 import 'package:movie_verse/core/service/api_service.dart';
 import 'package:movie_verse/features/tv_show/data/datasource/tv_show_remote_data_source.dart';
+import 'package:movie_verse/features/tv_show/data/model/genres_tv_show_model.dart';
 import 'package:movie_verse/features/tv_show/data/model/tv_show_model.dart';
 
 class TvShowRemoteDataSourceImpl extends TvShowRemoteDataSource {
   @override
   Future<TvShowModel> getPopularTvShow({required int page}) async {
     final uri =
-        "${TmdbApiEndpoints.popularTvShow}${TmdbApiEndpoints.apiKey}&page=$page";
+        "${TmdbApiEndpoints.popularTvShow}?${TmdbApiEndpoints.apiKey}&page=$page";
 
     final response = await ApiService.getRequest(uri);
 
@@ -21,7 +22,7 @@ class TvShowRemoteDataSourceImpl extends TvShowRemoteDataSource {
   @override
   Future<TvShowModel> getTopRatedTvShow({required int page}) async {
     final uri =
-        "${TmdbApiEndpoints.topRaterTvShow}${TmdbApiEndpoints.apiKey}&page=$page";
+        "${TmdbApiEndpoints.topRaterTvShow}?${TmdbApiEndpoints.apiKey}&page=$page";
 
     final response = await ApiService.getRequest(uri);
 
@@ -38,7 +39,7 @@ class TvShowRemoteDataSourceImpl extends TvShowRemoteDataSource {
     required int page,
   }) async {
     final uri =
-        "${TmdbApiEndpoints.tvGenre}$genre&api_key=acaff0fc38f0d35df3630c1f474b6081&page=$page";
+        "${TmdbApiEndpoints.tvGenre}$genre&${TmdbApiEndpoints.apiKey}&page=$page";
 
     final response = await ApiService.getRequest(uri);
 
@@ -46,6 +47,20 @@ class TvShowRemoteDataSourceImpl extends TvShowRemoteDataSource {
       return TvShowModel.fromJson(response.responsiveData);
     }
 
+    throw Exception(response.errorMessage);
+  }
+
+  @override
+  Future<GenresTvShowModel> getTvShowGenresItem() async {
+    final uri = "${TmdbApiEndpoints.genresIdTv}?${TmdbApiEndpoints.apiKey}";
+
+    final response = await ApiService.getRequest(uri);
+
+    if(response.isSuccess) {
+
+      return GenresTvShowModel.fromjson(response.responsiveData);
+
+    }
     throw Exception(response.errorMessage);
   }
 }

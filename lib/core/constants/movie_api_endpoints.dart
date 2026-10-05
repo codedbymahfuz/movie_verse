@@ -25,5 +25,11 @@
   static const String movieGenre = '$_baseUrl/discover/movie?with_genres=';
 
   static const String tvGenre = '$_baseUrl/discover/tv?with_genres=';
+
+  static const String searchMulti = "$_baseUrl/search/multi";
+
+  static const String genresIdMovie = "$_baseUrl/genre/movie/list";
+
+  static const String genresIdTv = "$_baseUrl/genre/tv/list";
   
  }

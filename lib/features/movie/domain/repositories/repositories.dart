@@ -1,3 +1,4 @@
+import 'package:movie_verse/features/movie/data/model/genres_movie_model.dart';
 import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
 
 abstract class MovieRepository {
@@ -13,4 +14,6 @@ abstract class MovieRepository {
   Future<MovieEntity> getUpNewMovie({required int page});
 
   Future<MovieEntity> getGenreMovie ({required int genre, required int page});
+
+  Future<GenresMovieModel> getGenresMovieItem ();
 }

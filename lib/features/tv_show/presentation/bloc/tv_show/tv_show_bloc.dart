@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/utils/pagination_util.dart';
 import 'package:movie_verse/features/tv_show/domain/repositories/repositories.dart';
-import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show_event.dart';
-import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show_state.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_event.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_state.dart';
 
 class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
   final TvShowRepository repository;
