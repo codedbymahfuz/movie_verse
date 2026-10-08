@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_verse/features/home/presentation/cubit/trending_tab_cubit.dart';
-import 'package:movie_verse/features/home/presentation/widgets/trending_switch_toggle.dart';
+import 'package:movie_verse/features/home/domain/entities/trending_result_entity.dart';
+import 'package:movie_verse/features/home/presentation/bloc/home_bloc.dart';
+import 'package:movie_verse/features/home/presentation/bloc/home_event.dart';
+import 'package:movie_verse/features/home/presentation/bloc/home_state.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
@@ -19,59 +21,106 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    context.read<HomeBloc>().add(FetcHomeEvent()); 
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 12),
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
 
-            Row(
-              children: [
-                Text(
-                  "Trending",
-                  style: TextTheme.of(
-                    context,
-                  ).titleLarge?.copyWith(fontSize: 20),
-                ),
+          if (state is HomeLoadingState) {
+            return Center(child: CircularProgressIndicator(
+              color: AppColors.purple,
+            ));
+          }
 
-                const SizedBox(width: 16),
+          if (state is HomeErrorState) {
+            return Center(child: Text("Error - ${state.message}"));
+          }
 
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 200),
-                  child: TrendingTabSwitchToggle(
-                    today: () {
-                      context.read<TrendingTabCubit>().switchButtonTrending(0);
-                    },
-                    weak: () {
-                      context.read<TrendingTabCubit>().switchButtonTrending(1);
-                    },
+          if (state is HomeLoadedState) {
+            final trendingList = state.trendingList;
+
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 12),
+
+                  Row(
+                    children: [
+                      Text(
+                        "Trending",
+                        style: TextTheme.of(
+                          context,
+                        ).titleLarge?.copyWith(fontSize: 20),
+                      ),
+
+                      const SizedBox(width: 16),
+
+                      // ConstrainedBox(
+                      //   constraints: const BoxConstraints(maxWidth: 200),
+                      //   child: TrendingTabSwitchToggle(
+                      //     today: () {
+                      //       context
+                      //           .read<TrendingTabCubit>()
+                      //           .switchButtonTrending(0);
+                      //       context.read<HomeBloc>().add(
+                      //         FetchTrendingAllEvent(timeWindow: "day"),
+                      //       );
+                      //     },
+                      //     weak: () {
+                      //       context
+                      //           .read<TrendingTabCubit>()
+                      //           .switchButtonTrending(1);
+                      //       context.read<HomeBloc>().add(
+                      //         FetchTrendingAllEvent(timeWindow: "week"),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                    
+                    ],
                   ),
-                ),
-              ],
-            ),
 
-            const SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
-            _trendingSlider(),
+                  _trendingSlider(trendingList),
 
-            MovieSection(),
+                  MovieSection(),
 
-            Divider(color: Colors.grey.shade600, indent: 6, endIndent: 6),
+                  Divider(color: Colors.grey.shade600, indent: 6, endIndent: 6),
 
-            TvShowSection(),
-          ],
-        ),
+                  TvShowSection(),
+                ],
+              ),
+            );
+          }
+
+          return SizedBox.shrink();
+        },
       ),
     );
   }
 
-  Widget _trendingSlider() {
-    return CarouselSlider(
-      options: CarouselOptions(height: 300.0, autoPlay: true),
-      items: [1, 2, 3, 4, 5].map((i) {
+  Widget _trendingSlider(List<TrendingResulstEntity> trendingList) {
+    return CarouselSlider.builder(
+      options: CarouselOptions(
+      height: 300.0,
+      aspectRatio: 16/9,
+      enlargeCenterPage: true,
+      autoPlay: true,
+      ),
+      
+      itemCount: trendingList.length,
+      itemBuilder: (context, index, realIndex) {
+        final item = trendingList[index];
+
         return Builder(
           builder: (BuildContext context) {
             return Padding(
@@ -82,21 +131,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     context: context,
                     backgroundColor: AppColors.bgDeep,
                     child: MediaDetailsBottomSheet(
-                      title: "Spider- Man - $i",
-                      overview: "movie.overview",
-                      rating: 2.5,
+                      title: item.displayTitle,
+                      genresList: item.genreIds,
+                      overview: item.overview ?? '',
+                      image: item.displayPath,
+                      rating: item.voteAverage,
+                      releaseDate: item.firstAirDate,
+                      mediaType: item.mediaType,
+                      
                     ),
                   );
                 },
-                child: MediaCard(
-                  title: "",
-                  imageUrl: "",
+                 child: MediaCard(
+                  title: item.displayTitle, 
+                  imageUrl: item.displayPath,
+                  fit: BoxFit.cover,
                 ),
               ),
             );
           },
         );
-      }).toList(),
+      },
     );
+
   }
 }

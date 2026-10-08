@@ -1,26 +1,26 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_verse/core/constants/movie_api_endpoints.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
 
 class MediaCard extends StatelessWidget {
   final String title;
-  final String imageUrl;
+  final String? imageUrl;
   final double? rating;
+  final BoxFit fit;
   final bool titleShow;
   const MediaCard({
     super.key,
     required this.title,
     required this.imageUrl,
+    this.fit = BoxFit.fitHeight,
     this.titleShow = true,
     this.rating,
   });
 
   @override
   Widget build(BuildContext context) {
-
-    
-
-    final String imageUrl =
-        "https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+    final image = "${TmdbApiEndpoints.imageBaseUrl}$imageUrl";
 
     return Column(
       children: [
@@ -29,11 +29,19 @@ class MediaCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  imageUrl,
-                  width: double.infinity,
+                child: CachedNetworkImage(
+                  imageUrl: image,
                   height: double.infinity,
-                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  fit: fit,
+
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(color: AppColors.purple),
+                  ),
+
+                  errorWidget: (context, url, error) =>
+                      Icon(Icons.error, color: AppColors.purple, size: 27),
+                      
                 ),
               ),
 
@@ -46,7 +54,7 @@ class MediaCard extends StatelessWidget {
 
         titleShow
             ? Text(
-                "Movie test",
+                title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextTheme.of(context).bodyMedium,
@@ -57,16 +65,16 @@ class MediaCard extends StatelessWidget {
   }
 
   Widget _ratingText() {
-      if (rating == null || rating! <= 0) {
-        return const SizedBox.shrink();
-      }
-
-      return Positioned(
-        bottom: 5,
-        left: 8,
-        child: _movieRating(rating!.toStringAsFixed(1)),
-      );
+    if (rating == null || rating! <= 0) {
+      return const SizedBox.shrink();
     }
+
+    return Positioned(
+      bottom: 5,
+      left: 8,
+      child: _movieRating(rating!.toStringAsFixed(1)),
+    );
+  }
 
   Widget _movieRating(String rating) {
     return Container(

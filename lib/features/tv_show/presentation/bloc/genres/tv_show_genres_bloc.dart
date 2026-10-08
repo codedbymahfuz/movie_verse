@@ -10,7 +10,7 @@ class TvShowGenresBloc extends Bloc<TvShowGenresEvent, TvShowGenresState>{
 
   TvShowGenresBloc({required this.repository}) : super (TvShowGenresInitialState()) {
 
-    on((event, emit) async {
+    on<FetchTvShowGenresEvent>((event, emit) async {
 
       emit(TvShowMovieGenresLoadingState());
 

@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/utils/pagination_util.dart';
 import 'package:movie_verse/features/movie/domain/repositories/repositories.dart';
@@ -9,23 +8,30 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
   final MovieRepository repository;
 
   int genrePage = 1;
+  int allMovie = 1;
 
   MovieExploreBloc({required this.repository}) : super(MovieExploreInitial()) {
-    on<FetchGenreEvent>((event, emit) async {
+
+    
+
+    
+
+
+
+
+    on<FetchSelectGenreEvent>((event, emit) async {
       emit(MovieExploreLoading());
 
-       
-       
       try {
-        int genrePage = 1;
+        genrePage = 1;
+
+       
+
         final genreMovieList = await repository.getGenreMovie(
           genre: event.genre,
           page: genrePage,
         );
 
-        debugPrint("${genreMovieList.results.length}");
-
-       
         emit(
           MovieExploreLoaded(
             movieList: genreMovieList,
@@ -37,13 +43,15 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
       }
     });
 
-    on<FetchMoreGenreEvent>((event, emit) async {
+    on<FetchMoreSelectGenreEvent>((event, emit) async {
       if (state is! MovieExploreLoaded) return;
 
       final currentState = state as MovieExploreLoaded;
 
       try {
         genrePage++;
+
+      
 
         await PaginationUtil.fetchMoreGenreMovies(
           emit: emit,

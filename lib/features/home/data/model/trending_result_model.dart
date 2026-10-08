@@ -34,8 +34,10 @@ class TrendingResulstModel extends TrendingResulstEntity {
       overview: json['overview'] ?? '',
       posterPath: json['poster_path'] ?? '',
       mediaType: json['media_type'] ?? '',
-      genreIds: json['genre_ids'].cast<int>()  ?? '',
-      popularity: json['popularity'] ?? '',
+      genreIds: json['genre_ids'] != null
+        ? List<int>.from(json['genre_ids'])
+        : [],
+      popularity: (json['popularity'] as num?)?.toDouble() ?? 0.0,
       releaseDate: json['release_date'] ?? '',
       video: json['video'],
       voteAverage: json['vote_average'] ?? '',
@@ -43,7 +45,9 @@ class TrendingResulstModel extends TrendingResulstEntity {
       name: json['name'] ?? '',
       originalName: json['original_name'] ?? '',
       firstAirDate: json['first_air_date'] ?? '',
-      originCountry: json['origin_country'].cast<String>() ?? '' ,
+      originCountry: json['origin_country'] != null
+        ? List<String>.from(json['origin_country'])
+        : [],
     );
   }
 }

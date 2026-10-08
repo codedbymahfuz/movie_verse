@@ -8,12 +8,13 @@ class MovieGenresBloc extends Bloc<MovieGenresEvent, MovieGenresState> {
 
   MovieGenresBloc({required this.repository})
     : super(MovieGenresInitialState()) {
-    on((event, emit) async {
+    on<FetchMovieGenresEvent>((event, emit) async {
       emit(MovieGenresLoadingState());
 
       try {
         final movieGenres = await repository.getGenresMovieItem();
 
+       
         emit(MovieGenresLoadedState(genres: movieGenres));
       } catch (e) {
         emit(MovieGenresErrorState(errorMessage: e.toString()));

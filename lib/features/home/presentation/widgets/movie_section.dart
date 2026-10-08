@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_verse/core/widgets/media_details_screen.dart';
-import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
-import 'package:movie_verse/core/widgets/media_section.dart.dart';
-import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/features/home/presentation/bloc/home_bloc.dart';
+import 'package:movie_verse/features/home/presentation/bloc/home_state.dart';
+import 'package:movie_verse/features/home/presentation/widgets/home_movie_card.dart';
 import 'package:movie_verse/features/movie/presentation/pages/new_movie_all_screen.dart';
 import 'package:movie_verse/features/movie/presentation/pages/popular_movie_all_screen.dart';
 import 'package:movie_verse/features/movie/presentation/pages/top_rated_movie_all_screen.dart';
@@ -13,97 +13,81 @@ class MovieSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        MediaSection(
-          title: "Popular",
-          itemCount: 20,
-          onTap: (index) {
-            BottomSheetHelper.show(
-              context: context,
-              backgroundColor: AppColors.bgDeep,
-              child: MediaDetailsBottomSheet(
-                title: "Spider- Man - $index",
-                overview: "movie.overview",
-                rating: 2.5,
-              ),
-            );
-          },
-          moreOnPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const PopularMovieAllScreen()),
-            );
-          },
-        ),
 
-        MediaSection(
-          title: "New",
-          itemCount: 20,
-          onTap: (index) {
-            BottomSheetHelper.show(
-              context: context,
-              backgroundColor: AppColors.bgDeep,
-              child: MediaDetailsBottomSheet(
-                title: "Spider- Man - $index",
-                overview: "movie.overview",
-                rating: 2.5,
-              ),
-            );
-          },
-          moreOnPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const NewMovieAllScreen()),
-            );
-          },
-        ),
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
 
-        MediaSection(
-          title: "UpComing",
-          itemCount: 20,
-          ratingShow: false,
-          onTap: (index) {
-            BottomSheetHelper.show(
-              context: context,
-              backgroundColor: AppColors.bgDeep,
-              child: MediaDetailsBottomSheet(
-                title: "Spider- Man - $index",
-                overview: "movie.overview",
-                rating: 2.5,
-              ),
-            );
-          },
-          moreOnPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const UpComingMovieAllScreen()),
-            );
-          },
-        ),
+        if (state is HomeLoadedState) {
 
-        MediaSection(
-          title: "Top Rated",
-          itemCount: 20,
-          onTap: (index) {
-            BottomSheetHelper.show(
-              context: context,
-              backgroundColor: AppColors.bgDeep,
-              child: MediaDetailsBottomSheet(
-                title: "Spider- Man - $index",
-                overview: "movie.overview",
-                rating: 2.5,
+          final popular = state.popularMovies.results;
+          final newMovie = state.newMovies.results;
+          final upComing = state.upComingMovies.results;
+          final topRated = state.topRatedMovies.results;
+
+          return Column(
+            children: [
+             
+              HomeMovieCard(
+                title: "Popular",
+                movieresults: popular,
+                moreOnPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PopularMovieAllScreen(),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-          moreOnPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const TopRatedMovieAllScreen()),
-            );
-          },
-        ),
-      ],
+
+              HomeMovieCard(
+                title: "New",
+                movieresults: newMovie,
+                moreOnPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const NewMovieAllScreen(),
+                    ),
+                  );
+                },
+              ),
+
+
+              HomeMovieCard(
+                title: "UpComing",
+                movieresults: upComing,
+                ratingShow: false,
+
+                moreOnPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const UpComingMovieAllScreen(),
+                    ),
+                  );
+                },
+              ),
+
+              HomeMovieCard(
+                title: "Top Rated",
+                movieresults: topRated,
+
+                moreOnPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const TopRatedMovieAllScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        }
+
+        return SizedBox.shrink();
+      },
     );
   }
 }

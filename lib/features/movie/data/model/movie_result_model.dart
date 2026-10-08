@@ -2,30 +2,59 @@ import 'package:movie_verse/features/movie/domain/entities/movie_result_entity.d
 
 class ResultModel extends MovieResultEntity {
   ResultModel({
-    required super.genreIds,
     required super.id,
     required super.title,
+    required super.overview,
     required super.originalLanguage,
-    required super.overView,
-    required super.releaseDate,
     required super.originalTitle,
-    required super.voteAverage,
-    required super.posterPath,
+    super.backdropPath,
+    super.genreIds,
+    super.popularity,
+    super.posterPath,
+    super.releaseDate,
+    super.softcore,
+    super.video,
+    super.voteAverage,
+    super.voteCount,
   });
 
   factory ResultModel.fromJson(Map<String, dynamic> json) {
     return ResultModel(
       id: json['id'] ?? 0,
-      overView: json["overview"],
       title: json['title'] ?? '',
-      originalLanguage: json["original_language"],
-      posterPath: json['poster_path'],
+      overview: json['overview'] ?? '',
+      originalLanguage: json['original_language'] ?? '',
       originalTitle: json['original_title'] ?? '',
-      releaseDate: json['release_date'],
-      voteAverage: (json['vote_average'] as num?)?.toDouble() ?? 0.0,  
+      backdropPath: json['backdrop_path'],
+      posterPath: json['poster_path'],
+      releaseDate: json['release_date'] ?? '',
+      popularity: (json['popularity'] as num?)?.toDouble(),
+      softcore: json['adult'], // TMDB API তে 'adult' থাকে
+      video: json['video'],
+      voteAverage: (json['vote_average'] as num?)?.toDouble() ?? 0.0,
+      voteCount: json['vote_count'],
       genreIds: json['genre_ids'] != null
-        ? List<int>.from(json['genre_ids'])
-        : [],
+          ? List<int>.from(json['genre_ids'].map((x) => x as int))
+          : [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'overview': overview,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
+      'backdrop_path': backdropPath,
+      'poster_path': posterPath,
+      'release_date': releaseDate,
+      'popularity': popularity,
+      'adult': softcore,
+      'video': video,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'genre_ids': genreIds,
+    };
   }
 }

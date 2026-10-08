@@ -48,19 +48,6 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   }
 
   @override
-  Future<MovieModel> getTrendingAll({required String timeWindow}) async {
-    final uri =
-        "${TmdbApiEndpoints.trendingAll}$timeWindow?${TmdbApiEndpoints.apiKey}";
-
-    final response = await ApiService.getRequest(uri);
-    if (response.isSuccess) {
-      return MovieModel.fromJson(response.responsiveData);
-    }
-
-    throw Exception("Something Wrong");
-  }
-
-  @override
   Future<MovieModel> getNewMovie({required int page}) async {
     final uri =
         "${TmdbApiEndpoints.newMovie}?${TmdbApiEndpoints.apiKey}&page=$page";
@@ -79,7 +66,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
     required int page,
   }) async {
     final uri =
-        "${TmdbApiEndpoints.movieGenre}$genre&${TmdbApiEndpoints.apiKey}=$page";
+        "${TmdbApiEndpoints.movieGenre}$genre&${TmdbApiEndpoints.apiKey}&page=$page";
 
     final response = await ApiService.getRequest(uri);
 

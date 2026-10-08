@@ -22,6 +22,10 @@
 
   static const String imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
 
+  static const String discoverMovie = "$_baseUrl/discover/movie";
+
+  static const String discoverTv = "$_baseUrl/discover/tv";
+
   static const String movieGenre = '$_baseUrl/discover/movie?with_genres=';
 
   static const String tvGenre = '$_baseUrl/discover/tv?with_genres=';

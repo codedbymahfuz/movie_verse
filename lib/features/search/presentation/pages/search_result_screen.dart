@@ -14,6 +14,7 @@ class SearchResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MediaGridView(
       items: [queryItem],
+      isLoadingMore: false,
       onTap: (index) {
         BottomSheetHelper.show(
           context: context,
@@ -22,6 +23,7 @@ class SearchResultScreen extends StatelessWidget {
             title: "Spider- Man - $index",
             overview: "movie.overview",
             rating: 2.5,
+            releaseDate: "",
           ),
         );
       },

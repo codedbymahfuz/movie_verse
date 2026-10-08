@@ -67,7 +67,7 @@ class _TvShowExploreScreenState extends State<TvShowExploreScreen> {
                   child: MediaDetailsBottomSheet(
                     title: "Spider- Man - $index",
                     overview: "movie.overview",
-                    rating: 2.5,
+                    rating: 2.5, releaseDate: '',
                   ),
                 );
               },

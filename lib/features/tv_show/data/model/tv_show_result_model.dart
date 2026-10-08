@@ -4,26 +4,59 @@ class TvShowResultModel extends TvShowResultEntity {
   TvShowResultModel({
     required super.id,
     required super.name,
-    required super.overView,
+    required super.overview,
     required super.originalLanguage,
-    required super.firstAirDate,
-    required super.originalTitle,
-    required super.genreIds,
-    required super.posterPath,
+    super.genreIds,
+    super.posterPath,
+    super.backdropPath,
+    super.originalName,
+    super.firstAirDate,
+    super.originCountry,
+    super.popularity,
+    super.softcore,
+    super.voteAverage,
+    super.voteCount,
   });
 
   factory TvShowResultModel.fromJson(Map<String, dynamic> json) {
     return TvShowResultModel(
       id: json['id'] ?? 0,
-      overView: json["overview"],
-      originalLanguage: json["original_language"],
       name: json['name'] ?? '',
+      overview: json['overview'] ?? '',
+      originalLanguage: json['original_language'] ?? '',
       posterPath: json['poster_path'],
-      originalTitle: json['original_title'] ?? '',
+      backdropPath: json['backdrop_path'],
+      originalName: json['original_name'],
       firstAirDate: json['first_air_date'],
+      originCountry: json['origin_country'] != null
+          ? List<String>.from(json['origin_country'].map((x) => x.toString()))
+          : null,
+      popularity: (json['popularity'] as num?)?.toDouble(),
+      softcore: json['adult'], 
+      voteAverage: (json['vote_average'] as num?)?.toDouble(),
+      voteCount: json['vote_count'],
       genreIds: json['genre_ids'] != null
-          ? List<int>.from(json["genre_ids"].map((genre) => genre as int))
+          ? List<int>.from(json['genre_ids'].map((x) => x as int))
           : [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'overview': overview,
+      'original_language': originalLanguage,
+      'poster_path': posterPath,
+      'backdrop_path': backdropPath,
+      'original_name': originalName,
+      'first_air_date': firstAirDate,
+      'origin_country': originCountry,
+      'popularity': popularity,
+      'adult': softcore,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'genre_ids': genreIds,
+    };
   }
 }

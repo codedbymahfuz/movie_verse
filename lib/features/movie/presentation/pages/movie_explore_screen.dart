@@ -72,7 +72,7 @@ class _MovieExploreScreenState extends State<MovieExploreScreen> {
                 child: MediaDetailsBottomSheet(
                   title: "Spider- Man - $index",
                   overview: "movie.overview",
-                  rating: 2.5,
+                  rating: 2.5, releaseDate: '',
                 ),
               );
             },

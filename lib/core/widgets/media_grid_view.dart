@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MediaGridView<T> extends StatelessWidget {
   final List<T> items;
   final Widget Function(T item) itemBuilder;
   final void Function(T item) onTap;
+  final VoidCallback? onLoadMore;
+  final bool isLoadingMore;
   const MediaGridView({
     super.key,
     required this.items,
     required this.itemBuilder,
     required this.onTap,
+    this.onLoadMore,
+    this.isLoadingMore = false,
   });
 
   @override
@@ -25,26 +31,57 @@ class MediaGridView<T> extends StatelessWidget {
           crossAxisCount = 5;
         }
 
-        return GridView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          itemCount: items.length,
+        return NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (isLoadingMore || onLoadMore == null) return false;
 
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            mainAxisSpacing: 15,
-            crossAxisSpacing: 10,
-            childAspectRatio: 0.65,
-          ),
-          itemBuilder: (context, index) {
-            final item = items[index];
+            if (notification.metrics.pixels >=
+                notification.metrics.maxScrollExtent - 30) {
+              onLoadMore!();
+            }
 
-            return GestureDetector(
-              onTap: () => onTap(item),
-              child: itemBuilder(item),
-            );
+            return false;
           },
+          
+           child: GridView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            itemCount: isLoadingMore
+                ? items.length + crossAxisCount
+                : items.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              mainAxisSpacing: 15,
+              crossAxisSpacing: 10,
+              childAspectRatio: 0.65,
+            ),
+
+             itemBuilder: (context, index) {
+              if (index >= items.length) {
+                return _buildDefaultShimmerItem();
+              }
+              final item = items[index];
+
+              return GestureDetector(
+                onTap: () => onTap(item),
+                child: itemBuilder(item),
+              );
+            },
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildDefaultShimmerItem() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 }

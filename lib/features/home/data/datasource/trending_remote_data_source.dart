@@ -9,8 +9,16 @@ class TrendingRemoteDataSource {
     final uri =
         "${TmdbApiEndpoints.trendingAll}$timeWindow?${TmdbApiEndpoints.apiKey}";
 
+
+       
+
+   
+
     final response = await ApiService.getRequest(uri);
     if (response.isSuccess) {
+
+  
+
       return TrendingModel.fromJson(response.responsiveData);
     }
 

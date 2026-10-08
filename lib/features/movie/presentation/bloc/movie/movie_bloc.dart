@@ -169,17 +169,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       }
     });
 
-    on<TrendingAllEvent>((event, emit) async {
-      try {
-        final trendingAll = await repository.getTrendingAll(
-          timeWindow: event.timeWindow,
-        );
-
-        emit(TrendingAllState(movieList: trendingAll));
-      } catch (e) {
-        emit(MovieErrorState(errorMessage: e.toString()));
-      }
-    });
+    
 
    
   }

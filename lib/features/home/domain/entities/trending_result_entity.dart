@@ -40,4 +40,15 @@ class TrendingResulstEntity {
       this.originalName,
       this.firstAirDate,
       this.originCountry});
+
+      String get displayTitle  {
+    if(title != null && title!.isNotEmpty) return title!;
+    if(name != null && name!.isNotEmpty) return name!;
+
+    return "Unknow name";
+  }
+
+  String get displayPath {
+    return posterPath ?? backdropPath ?? '';
+  }
 }
