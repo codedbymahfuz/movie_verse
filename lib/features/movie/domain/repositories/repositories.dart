@@ -9,9 +9,12 @@ abstract class MovieRepository {
 
   Future<MovieEntity> getUpComingMovie({required int page});
 
+  Future<MovieEntity> getAllMovies({required int page});
+
   Future<MovieEntity> getUpNewMovie({required int page});
 
   Future<MovieEntity> getGenreMovie ({required int genre, required int page});
 
   Future<GenresMovieModel> getGenresMovieItem ();
+
 }

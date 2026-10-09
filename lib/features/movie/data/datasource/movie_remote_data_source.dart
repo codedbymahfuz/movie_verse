@@ -10,6 +10,8 @@ abstract class MovieRemoteDataSource {
 
   Future<MovieModel> getNewMovie({required int page});
 
+  Future<MovieModel> getAllMovies({required int page});
+
   Future<MovieModel> getGenreMovie({required int genre, required int page});
 
   Future<GenresMovieModel> getMovieGenresItem();

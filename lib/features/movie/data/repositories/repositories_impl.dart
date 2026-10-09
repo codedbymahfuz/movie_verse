@@ -10,7 +10,6 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<MovieEntity> getPopularMovies({required int page}) async {
-    
     return await remoteDataSource.getPopularMovies(page: page);
   }
 
@@ -24,7 +23,10 @@ class MovieRepositoryImpl implements MovieRepository {
     return await remoteDataSource.getUpComingMovies(page: page);
   }
 
-  
+  @override
+  Future<MovieEntity> getAllMovies({required int page}) async {
+    return await remoteDataSource.getAllMovies(page: page);
+  }
 
   @override
   Future<MovieEntity> getUpNewMovie({required int page}) async {
@@ -32,7 +34,10 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<MovieEntity> getGenreMovie({required int genre, required int page}) async {
+  Future<MovieEntity> getGenreMovie({
+    required int genre,
+    required int page,
+  }) async {
     return await remoteDataSource.getGenreMovie(genre: genre, page: page);
   }
 

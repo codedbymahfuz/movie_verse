@@ -19,9 +19,14 @@ dependencies:
   carousel_slider: ^5.1.2
   bloc_concurrency: ^0.3.0
   stream_transform: ^2.1.2
+<<<<<<< HEAD
   equatable: ^3.0.0
   cached_network_image: ^4.0.3
   shimmer: ^4.0.0
+=======
+  youtube_player_flutter: ^10.0.1
+  
+>>>>>>> feature/movie-api
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
  import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
 
+
 abstract class MovieExploreState {}
 
  class MovieExploreInitial extends MovieExploreState {}
@@ -32,9 +33,9 @@ abstract class MovieExploreState {}
  
 
 
- class MovieExploreError extends MovieExploreState {
+ class MovieExploreErrorState extends MovieExploreState {
   final String errorMessage;
 
-  MovieExploreError({required this.errorMessage});
+  MovieExploreErrorState({required this.errorMessage});
 }
  

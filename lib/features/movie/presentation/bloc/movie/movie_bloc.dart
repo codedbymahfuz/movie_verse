@@ -11,6 +11,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   int topRatedPage = 1;
   int upcomingPage = 1;
   int newMoviePage = 1;
+  int allMoviePage = 1;
   
   MovieBloc({required this.repository}) : super(MovieInitialState()) {
     on<FetchPopularMovieEvent>((event, emit) async {

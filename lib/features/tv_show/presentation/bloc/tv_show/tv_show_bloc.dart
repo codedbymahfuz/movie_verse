@@ -6,12 +6,53 @@ import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_s
 
 class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
   final TvShowRepository repository;
-
   int popularTvShowPage = 1;
   int topRatedTvShowPage = 1;
   int genreTvShowPage = 1;
+  int allTvShowPage = 1;
 
   TvShowBloc({required this.repository}) : super(TvShowInitialState()) {
+
+    on<FetchAllTvShowEvent>((event, emit) async {
+      allTvShowPage = 1;
+
+      emit(TvShowLoadingState());
+
+      try {
+        final allTvShow = await repository.getAllTvShow(page: allTvShowPage);
+
+        emit(TvShowLoadedState(tvShowList: allTvShow));
+      } catch (e) {
+        emit(TvShowErrorState(errorMessage: e.toString()));
+      }
+    });
+
+    on<FetchMoreAllTvShowEvent>((event, emit) async {
+      if (state is! TvShowLoadedState) return;
+
+      final currentState = state as TvShowLoadedState;
+
+      try {
+        allTvShowPage++;
+
+        await PaginationUtil.fetchMoreTvShow(
+          emit: emit,
+          currentState: currentState,
+
+          tvShowFuture: repository.getAllTvShow(page: allTvShowPage),
+        );
+      } catch (e) {
+        allTvShowPage--;
+
+        emit(
+          TvShowLoadedState(
+            tvShowList: currentState.tvShowList,
+            hasMore: currentState.hasMore,
+            isLoadingMore: false,
+          ),
+        );
+      }
+    });
 
     on<FetchPopularTvShowEvent>((event, emit) async {
       popularTvShowPage = 1;
@@ -105,7 +146,6 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
     });
 
     on<FetchGenreTvShowEvent>((event, emit) async {
-
       emit(TvShowLoadingState());
 
       genreTvShowPage = 1;
@@ -115,8 +155,6 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
           genre: event.genre,
           page: genreTvShowPage,
         );
-
-        
 
         emit(
           TvShowLoadedState(
@@ -133,8 +171,6 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
       if (state is! TvShowLoadedState) return;
 
       final currentState = state as TvShowLoadedState;
-
-     
 
       try {
         genreTvShowPage++;
@@ -159,6 +195,17 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
         );
       }
     });
-  
+
+    // on<FetchTvShowVideoEvent>((event, emit) async {
+    //   emit(TvShowLoadingState());
+
+    //   try {
+    //     final video = await repository.getVideosTv(videoId: event.videoId);
+
+    //     emit(TvShowVideoLoadedState(video: video));
+    //   } catch (e) {
+    //     emit(TvShowErrorState(errorMessage: e.toString()));
+    //   }
+    // });
   }
 }

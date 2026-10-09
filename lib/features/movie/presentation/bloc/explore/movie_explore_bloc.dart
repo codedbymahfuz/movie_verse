@@ -8,25 +8,60 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
   final MovieRepository repository;
 
   int genrePage = 1;
-  int allMovie = 1;
+  int allMoviePage = 1;
 
   MovieExploreBloc({required this.repository}) : super(MovieExploreInitial()) {
-
-    
-
-    
-
-
-
-
-    on<FetchSelectGenreEvent>((event, emit) async {
+    on<FetchAllMovieEvent>((event, emit) async {
+      allMoviePage = 1;
       emit(MovieExploreLoading());
 
       try {
-        genrePage = 1;
+        final allMovies = await repository.getAllMovies(page: allMoviePage);
 
-       
+        emit(
+          MovieExploreLoaded(
+            movieList: allMovies,
+            hasMore: allMovies.results.isNotEmpty,
+          ),
+        );
+      } catch (e) {
+        emit(MovieExploreErrorState(errorMessage: e.toString()));
+      }
+    });
 
+    on<FetchMoreAllMovieEvent>((event, emit) async {
+      if (state is! MovieExploreLoaded) return;
+
+      final currentState = state as MovieExploreLoaded;
+
+      if (currentState.isLoadingMore || !currentState.hasMore) return;
+
+      allMoviePage++;
+
+      try {
+        await PaginationUtil.fetchMoreExploreMovie(
+          emit: emit,
+          currentState: currentState,
+          movieFuture: repository.getAllMovies(page: allMoviePage),
+        );
+      } catch (e) {
+        allMoviePage--;
+
+        emit(
+          MovieExploreLoaded(
+            movieList: currentState.movieList,
+            hasMore: currentState.hasMore,
+            isLoadingMore: false,
+          ),
+        );
+      }
+    });
+
+    on<FetchSelectGenreEvent>((event, emit) async {
+      emit(MovieExploreLoading());
+      genrePage = 1;
+
+      try {
         final genreMovieList = await repository.getGenreMovie(
           genre: event.genre,
           page: genrePage,
@@ -39,7 +74,7 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
           ),
         );
       } catch (e) {
-        emit(MovieExploreError(errorMessage: e.toString()));
+        emit(MovieExploreErrorState(errorMessage: e.toString()));
       }
     });
 
@@ -48,11 +83,11 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
 
       final currentState = state as MovieExploreLoaded;
 
+      if (currentState.isLoadingMore || !currentState.hasMore) return;
+
+      genrePage++;
+
       try {
-        genrePage++;
-
-      
-
         await PaginationUtil.fetchMoreGenreMovies(
           emit: emit,
           currentState: currentState,
@@ -63,6 +98,7 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
         );
       } catch (e) {
         genrePage--;
+
         emit(
           MovieExploreLoaded(
             movieList: currentState.movieList,

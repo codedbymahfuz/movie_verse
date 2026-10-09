@@ -2,11 +2,11 @@ import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
 
 abstract class MovieState {}
 
- class MovieInitialState extends MovieState {}
+class MovieInitialState extends MovieState {}
 
- class MovieLoadingState extends MovieState {}
+class MovieLoadingState extends MovieState {}
 
- class MovieLoadedState extends MovieState {
+class MovieLoadedState extends MovieState {
   final MovieEntity movieList;
   final bool hasMore;
   final bool isLoadingMore;
@@ -29,21 +29,8 @@ abstract class MovieState {}
   }
 }
 
- class TrendingAllState extends MovieState {
-  final MovieEntity movieList;
-  final bool hasMore;
-  final bool isLoadingMore;
-  TrendingAllState({
-    required this.movieList,
-    this.hasMore = true,
-    this.isLoadingMore = false,
-  });
-
-}
-
- class MovieErrorState extends MovieState {
+class MovieErrorState extends MovieState {
   final String errorMessage;
 
   MovieErrorState({required this.errorMessage});
 }
- 
