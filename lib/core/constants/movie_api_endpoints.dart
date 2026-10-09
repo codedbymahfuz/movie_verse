@@ -22,14 +22,27 @@
 
   static const String imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
 
-  static const String movieGenre = '$_baseUrl/discover/movie?with_genres=';
+  static const String allMovie = '$_baseUrl/discover/movie';
 
-  static const String tvGenre = '$_baseUrl/discover/tv?with_genres=';
+  static const String allTvShow = '$_baseUrl/discover/tv';
+
+  static const String movieGenre = '$allMovie?with_genres=';
+
+  static const String tvGenre = '$allTvShow?with_genres=';
 
   static const String searchMulti = "$_baseUrl/search/multi";
 
   static const String genresIdMovie = "$_baseUrl/genre/movie/list";
 
   static const String genresIdTv = "$_baseUrl/genre/tv/list";
+
+  static const String movieVideo = "$_baseUrl/movie/";
+
+  static const String tvVideo = "$_baseUrl/tv/";
+
+  static const String videoUri = "$_baseUrl/";
+
   
+  
+ 
  }

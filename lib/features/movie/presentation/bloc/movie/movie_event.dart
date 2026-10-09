@@ -16,10 +16,9 @@ class FetchNewMovieEvent extends MovieEvent {}
 
 class FetchMoreNewMovieEvent extends MovieEvent {}
 
-class TrendingAllEvent extends MovieEvent {
-  final String timeWindow;
+class FetchAllMovieEvent extends MovieEvent {}
 
-  TrendingAllEvent({required this.timeWindow});
-}
+class FetchMoreAllMovieEvent extends MovieEvent {}
+
 
 

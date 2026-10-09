@@ -8,8 +8,9 @@ import 'package:movie_verse/features/tv_show/domain/entities/tv_show_entity.dart
 import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_state.dart';
 
 class PaginationUtil {
+
   static Future<void> fetchMoreMovies({
-    required Emitter<MovieState> emit,
+    required Emitter<MovieState> emit, 
     required MovieLoadedState currentState,
     required Future<MovieEntity> movieFuture,
   }) async {
@@ -42,7 +43,50 @@ class PaginationUtil {
       ),
     );
   }
+  
+  static Future<void> fetchMoreExploreMovie({
+    required Emitter<MovieExploreState> emit,
+    required MovieExploreLoaded currentState,
+    required Future<MovieEntity> movieFuture,
+  }) async {
+    if (currentState.isLoadingMore || !currentState.hasMore) {
+      return;
+    }
 
+    emit(
+      currentState.copyWith(
+        isLoadingMore: true,
+      ),
+    );
+
+    try {
+      final newMovieList = await movieFuture;
+
+      final updatedResults = [
+        ...currentState.movieList.results,
+        ...newMovieList.results,
+      ];
+
+      emit(
+        currentState.copyWith(
+          movieList: MovieEntity(
+            results: updatedResults,
+          ),
+          hasMore: newMovieList.results.isNotEmpty,
+          isLoadingMore: false,
+        ),
+      );
+    } catch (e) {
+      emit(
+        currentState.copyWith(
+          isLoadingMore: false,
+        ),
+      );
+
+      rethrow;
+    }
+  }
+  
   static Future<void> fetchMoreTvShow({
     required Emitter<TvShowState> emit,
     required TvShowLoadedState currentState,
@@ -143,4 +187,6 @@ class PaginationUtil {
       ),
     );
   }
+
+   
 }

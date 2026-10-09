@@ -1,5 +1,9 @@
 abstract class TvShowEvent {}
 
+class FetchAllTvShowEvent extends TvShowEvent {}
+
+class FetchMoreAllTvShowEvent extends TvShowEvent {}
+
 class FetchPopularTvShowEvent extends TvShowEvent {}
 
 class FetchMorePopularTvShowEvent extends TvShowEvent {}
@@ -20,4 +24,10 @@ class FetchMoreGenreTvShowEvent extends TvShowEvent {
   final int genre;
 
   FetchMoreGenreTvShowEvent({required this.genre});
+}
+
+class FetchTvShowVideoEvent extends TvShowEvent {
+  final int videoId;
+
+  FetchTvShowVideoEvent ({required this.videoId});
 }

@@ -48,9 +48,9 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   }
 
   @override
-  Future<MovieModel> getTrendingAll({required String timeWindow}) async {
+  Future<MovieModel> getAllMovies({required int page}) async {
     final uri =
-        "${TmdbApiEndpoints.trendingAll}$timeWindow?${TmdbApiEndpoints.apiKey}";
+        "${TmdbApiEndpoints.allMovie}?${TmdbApiEndpoints.apiKey}&page= $page";
 
     final response = await ApiService.getRequest(uri);
     if (response.isSuccess) {

@@ -9,7 +9,7 @@ abstract class MovieRemoteDataSource {
 
   Future<MovieModel> getUpComingMovies ({required int page});
 
-  Future<MovieModel> getTrendingAll ({required String timeWindow});
+  Future<MovieModel> getAllMovies ({required int page});
 
   Future<MovieModel> getNewMovie ({required int page});
 

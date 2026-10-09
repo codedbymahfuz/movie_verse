@@ -9,7 +9,7 @@ abstract class MovieRepository {
 
   Future<MovieEntity> getUpComingMovie({required int page});
 
-  Future<MovieEntity> getTrendingAll({required String timeWindow});
+  Future<MovieEntity> getAllMovies({required int page});
 
   Future<MovieEntity> getUpNewMovie({required int page});
 

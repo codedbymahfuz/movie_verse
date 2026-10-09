@@ -25,8 +25,8 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<MovieEntity> getTrendingAll({required String timeWindow}) async {
-    return await remoteDataSource.getTrendingAll(timeWindow: timeWindow);
+  Future<MovieEntity> getAllMovies({required int page}) async {
+    return await remoteDataSource.getAllMovies(page: page);
   }
 
   @override
