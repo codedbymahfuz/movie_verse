@@ -1,4 +1,4 @@
-import 'package:movie_verse/features/movie/domain/entities/genre_movie_entity.dart';
+import 'package:movie_verse/features/movie/domain/entities/genre/genre_movie_entity.dart';
 import 'package:movie_verse/features/tv_show/data/datasource/tv_show_remote_data_source.dart';
 import 'package:movie_verse/features/tv_show/domain/entities/tv_show_entity.dart';
 import 'package:movie_verse/features/tv_show/domain/repositories/repositories.dart';
@@ -24,11 +24,11 @@ class TvShowRepositoryImpl implements TvShowRepository {
   }
 
   @override
-  Future<TvShowEntity> getGenreTvShow({
+  Future<TvShowEntity> getDiscoverTvShow({
     required int genre,
     required int page,
   }) async {
-    return await remoteDataSource.getGenreTvShow(genre: genre, page: page);
+    return await remoteDataSource.getDiscoverTvShow(genre: genre, page: page);
   }
 
   @override

@@ -4,25 +4,25 @@ import 'package:movie_verse/features/tv_show/presentation/bloc/genres/tv_show_ge
 import 'package:movie_verse/features/tv_show/presentation/bloc/genres/tv_show_genres_state.dart';
 
 
-class TvShowGenresBloc extends Bloc<TvShowGenresEvent, TvShowGenresState>{
+class TvShowGenresBloc extends Bloc<TvShowGenresEvent, TvShowGenresItemState>{
 
   final TvShowRepository repository;
 
-  TvShowGenresBloc({required this.repository}) : super (TvShowGenresInitialState()) {
+  TvShowGenresBloc({required this.repository}) : super (TvShowGenresItemInitialState()) {
 
-    on<FetchTvShowGenresEvent>((event, emit) async {
+    on<FetchTvShowGenresItemEvent>((event, emit) async {
 
-      emit(TvShowMovieGenresLoadingState());
+      emit(TvShowMovieGenresItemLoadingState());
 
        try {
 
         final tvShowGenres = await repository.getGenreTvShowItem();
 
-        emit(TvShowGenresLoadedState(genres: tvShowGenres));
+        emit(TvShowGenresItemLoadedState(genres: tvShowGenres));
 
 
        } catch (e) {
-        emit(TvShowGenresErrorState(errorMessage: e.toString(),),);
+        emit(TvShowGenresItemErrorState(errorMessage: e.toString(),),);
        }
 
     });

@@ -1,4 +1,4 @@
-import 'package:movie_verse/features/tv_show/domain/entities/genres_tv_show_list_entity.dart';
+import 'package:movie_verse/features/tv_show/domain/entities/genre/genres_tv_show_list_entity.dart';
 
 class GenresTvShowEntity {
   

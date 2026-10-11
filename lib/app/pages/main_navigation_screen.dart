@@ -14,15 +14,13 @@ class BotomNavigationBar extends StatefulWidget {
 }
 
 class _BotomNavigationBarState extends State<BotomNavigationBar> {
-  int currentUndex = 0;
+  int currentIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(),
-    MovieExploreScreen(),
-   
-    TvShowExploreScreen(),
-    
-    SearchScreen()
+    const HomeScreen(),
+    const MovieExploreScreen(),
+    const TvShowExploreScreen(), 
+    const SearchScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -39,7 +37,10 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
         ),
          centerTitle: true,
         ),
-      body: _pages[currentUndex],
+        body: IndexedStack(
+        index: currentIndex,
+        children: _pages,
+      ),
 
       bottomNavigationBar: Container(
         height: 70,
@@ -63,12 +64,12 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
   }
 
   Widget _buildNavigationBar(IconData icon, String label, int index) {
-    bool isSelected = currentUndex == index;
+    bool isSelected = currentIndex == index;
     return Expanded(
       child: GestureDetector(
         onTap: () {
           setState(() {
-            currentUndex = index;
+            currentIndex = index;
           });
         },
         child: Column(

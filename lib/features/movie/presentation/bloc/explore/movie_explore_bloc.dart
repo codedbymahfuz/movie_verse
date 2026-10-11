@@ -11,6 +11,7 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
   int allMoviePage = 1;
 
   MovieExploreBloc({required this.repository}) : super(MovieExploreInitial()) {
+    
     on<FetchAllMovieEvent>((event, emit) async {
       allMoviePage = 1;
       emit(MovieExploreLoading());
@@ -57,12 +58,12 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
       }
     });
 
-    on<FetchSelectGenreEvent>((event, emit) async {
+    on<FetchSelectDiscoverEvent>((event, emit) async {
       emit(MovieExploreLoading());
       genrePage = 1;
 
       try {
-        final genreMovieList = await repository.getGenreMovie(
+        final genreMovieList = await repository.getDiscoverMovies(
           genre: event.genre,
           page: genrePage,
         );
@@ -78,7 +79,7 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
       }
     });
 
-    on<FetchMoreSelectGenreEvent>((event, emit) async {
+    on<FetchMoreSelectDiscoverEvent>((event, emit) async {
       if (state is! MovieExploreLoaded) return;
 
       final currentState = state as MovieExploreLoaded;
@@ -91,7 +92,7 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
         await PaginationUtil.fetchMoreGenreMovies(
           emit: emit,
           currentState: currentState,
-          movieFuture: repository.getGenreMovie(
+          movieFuture: repository.getDiscoverMovies(
             genre: event.genre,
             page: genrePage,
           ),

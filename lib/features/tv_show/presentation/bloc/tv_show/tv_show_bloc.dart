@@ -145,13 +145,13 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
       }
     });
 
-    on<FetchGenreTvShowEvent>((event, emit) async {
+    on<FetchSelectDiscoverTvShowEvent>((event, emit) async {
       emit(TvShowLoadingState());
 
       genreTvShowPage = 1;
 
       try {
-        final genreTvShowList = await repository.getGenreTvShow(
+        final genreTvShowList = await repository.getDiscoverTvShow(
           genre: event.genre,
           page: genreTvShowPage,
         );
@@ -167,7 +167,7 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
       }
     });
 
-    on<FetchMoreGenreTvShowEvent>((event, emit) async {
+    on<FetchMoreSelectDiscoverTvShowEvent>((event, emit) async {
       if (state is! TvShowLoadedState) return;
 
       final currentState = state as TvShowLoadedState;
@@ -178,7 +178,7 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
         await PaginationUtil.fetchMoreTvShow(
           emit: emit,
           currentState: currentState,
-          tvShowFuture: repository.getGenreTvShow(
+          tvShowFuture: repository.getDiscoverTvShow(
             genre: event.genre,
             page: genreTvShowPage,
           ),
@@ -196,16 +196,5 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
       }
     });
 
-    // on<FetchTvShowVideoEvent>((event, emit) async {
-    //   emit(TvShowLoadingState());
-
-    //   try {
-    //     final video = await repository.getVideosTv(videoId: event.videoId);
-
-    //     emit(TvShowVideoLoadedState(video: video));
-    //   } catch (e) {
-    //     emit(TvShowErrorState(errorMessage: e.toString()));
-    //   }
-    // });
   }
 }

@@ -7,8 +7,8 @@ class GenreButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: AppColors.midNight,
         borderRadius: BorderRadius.circular(14),
@@ -18,7 +18,7 @@ class GenreButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
 
         children: [
-          Icon(Icons.explore, color: AppColors.warmAmber, size: 20),
+          const Icon(Icons.explore, color: AppColors.warmAmber, size: 20),
 
           const SizedBox(width: 7),
 

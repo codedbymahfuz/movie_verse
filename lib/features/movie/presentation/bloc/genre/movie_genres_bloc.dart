@@ -3,21 +3,21 @@ import 'package:movie_verse/features/movie/domain/repositories/repositories.dart
 import 'package:movie_verse/features/movie/presentation/bloc/genre/movie_genres_event.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/genre/movie_genres_state.dart';
 
-class MovieGenresBloc extends Bloc<MovieGenresEvent, MovieGenresState> {
+class MovieGenresBloc extends Bloc<MovieGenresEvent, MovieGenresItemState> {
   final MovieRepository repository;
 
   MovieGenresBloc({required this.repository})
-    : super(MovieGenresInitialState()) {
-    on<FetchMovieGenresEvent>((event, emit) async {
-      emit(MovieGenresLoadingState());
+    : super(MovieGenresItemInitialState()) {
+    on<FetchMovieGenresItemEvent>((event, emit) async {
+      emit(MovieGenresItemLoadingState());
 
       try {
-        final movieGenres = await repository.getGenresMovieItem();
+        final movieGenres = await repository.getMovieGenresItem();
 
        
-        emit(MovieGenresLoadedState(genres: movieGenres));
+        emit(MovieGenresItemLoadedState(genres: movieGenres));
       } catch (e) {
-        emit(MovieGenresErrorState(errorMessage: e.toString()));
+        emit(MovieGenresItemErrorState(errorMessage: e.toString()));
       }
     });
   }

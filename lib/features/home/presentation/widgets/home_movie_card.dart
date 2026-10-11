@@ -28,7 +28,7 @@ class HomeMovieCard extends StatelessWidget {
           children: [
             Text(title, style: TextTheme.of(context).titleMedium),
 
-            Spacer(),
+            const Spacer(),
 
             TextButton(
               onPressed: moreOnPressed,
@@ -56,7 +56,9 @@ class HomeMovieCard extends StatelessWidget {
                         context: context,
                         backgroundColor: AppColors.bgDeep,
                         child: MediaDetailsBottomSheet(
+                          id: item.id,
                           title: item.title,
+                          mediaType: 'movie',
                           image: item.posterPath,
                           overview: item.overview,
                           rating: item.voteAverage,

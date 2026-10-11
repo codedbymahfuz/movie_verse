@@ -1,7 +1,7 @@
 import 'package:movie_verse/core/constants/movie_api_endpoints.dart';
 import 'package:movie_verse/core/service/api_service.dart';
 import 'package:movie_verse/features/movie/data/datasource/movie_remote_data_source.dart';
-import 'package:movie_verse/features/movie/data/model/genres_movie_model.dart';
+import 'package:movie_verse/features/movie/data/model/genre/genres_movie_model.dart';
 import 'package:movie_verse/features/movie/data/model/movie_model.dart';
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
@@ -16,7 +16,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       return MovieModel.fromJson(response.responsiveData);
     }
 
-    throw Exception("Something Wrong");
+    throw Exception(response.errorMessage);
   }
 
   @override
@@ -30,7 +30,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       return MovieModel.fromJson(response.responsiveData);
     }
 
-    throw Exception("Something Wrong");
+    throw Exception(response.errorMessage);
   }
 
   @override
@@ -44,7 +44,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       return MovieModel.fromJson(response.responsiveData);
     }
 
-    throw Exception("Something Wrong");
+    throw Exception(response.errorMessage);
   }
 
   @override
@@ -57,7 +57,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       return MovieModel.fromJson(response.responsiveData);
     }
 
-    throw Exception("Something Wrong");
+    throw Exception(response.errorMessage);
   }
 
   @override
@@ -70,11 +70,11 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       return MovieModel.fromJson(response.responsiveData);
     }
 
-    throw Exception("Something Wrong");
+    throw Exception(response.errorMessage);
   }
 
   @override
-  Future<MovieModel> getGenreMovie({
+  Future<MovieModel> getDiscoverMovies({
     required int genre,
     required int page,
   }) async {

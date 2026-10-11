@@ -4,31 +4,47 @@ import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/core/widgets/media_card.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/media_grid_view.dart';
+import 'package:movie_verse/features/search/domain/entities/search_result_entity.dart';
 
 class SearchResultScreen extends StatelessWidget {
-  final int queryItem;
+  final List<SearchResultsEntity> queryItem;
+  final bool isLoadingMore;
+  final void Function() searchResultLoadMore;
 
-  const SearchResultScreen({super.key, required this.queryItem});
+  const SearchResultScreen({super.key, 
+  required this.queryItem, required this.searchResultLoadMore,  this.isLoadingMore = false,});
 
   @override
   Widget build(BuildContext context) {
+
     return MediaGridView(
-      items: [queryItem],
-      isLoadingMore: false,
-      onTap: (index) {
+      items: queryItem,
+      isLoadingMore: isLoadingMore,
+      onLoadMore: () {
+      searchResultLoadMore();
+      },
+        onTap: (item) {
         BottomSheetHelper.show(
           context: context,
           backgroundColor: AppColors.bgDeep,
           child: MediaDetailsBottomSheet(
-            title: "Spider- Man - $index",
-            overview: "movie.overview",
-            rating: 2.5,
-            releaseDate: "",
+            id: item.id,
+            title: item.displayTitle ,
+            overview: item.overview.toString(),
+            image: item.displayPath,
+            genresList: item.genreIds,
+            rating: item.voteAverage,
+            mediaType: item.mediaType,
+            releaseDate: item.mediareleaseDate,
           ),
         );
       },
-      itemBuilder: (item) {
-        return MediaCard(title: "", imageUrl: "", rating: 1.0);
+        itemBuilder: (item) {
+        return MediaCard(
+          title: item.displayTitle, 
+          imageUrl: item.displayPath, 
+          rating: item.voteAverage,
+        );
       },
     );
   }

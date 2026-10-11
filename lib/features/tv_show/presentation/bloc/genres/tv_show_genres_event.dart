@@ -1,3 +1,3 @@
 abstract class TvShowGenresEvent {}
 
-class FetchTvShowGenresEvent extends TvShowGenresEvent {}
+class FetchTvShowGenresItemEvent extends TvShowGenresEvent {}

@@ -34,9 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
 
           if (state is HomeLoadingState) {
-            return Center(child: CircularProgressIndicator(
-              color: AppColors.purple,
-            ));
+            return const Center(child: CircularProgressIndicator(),
+          );
           }
 
           if (state is HomeErrorState) {
@@ -62,28 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       const SizedBox(width: 16),
-
-                      // ConstrainedBox(
-                      //   constraints: const BoxConstraints(maxWidth: 200),
-                      //   child: TrendingTabSwitchToggle(
-                      //     today: () {
-                      //       context
-                      //           .read<TrendingTabCubit>()
-                      //           .switchButtonTrending(0);
-                      //       context.read<HomeBloc>().add(
-                      //         FetchTrendingAllEvent(timeWindow: "day"),
-                      //       );
-                      //     },
-                      //     weak: () {
-                      //       context
-                      //           .read<TrendingTabCubit>()
-                      //           .switchButtonTrending(1);
-                      //       context.read<HomeBloc>().add(
-                      //         FetchTrendingAllEvent(timeWindow: "week"),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
                     
                     ],
                   ),
@@ -92,17 +69,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   _trendingSlider(trendingList),
 
-                  MovieSection(),
+                  const MovieSection(),
 
                   Divider(color: Colors.grey.shade600, indent: 6, endIndent: 6),
 
-                  TvShowSection(),
+                  const TvShowSection(),
                 ],
               ),
             );
           }
 
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         },
       ),
     );
@@ -119,6 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
       
       itemCount: trendingList.length,
       itemBuilder: (context, index, realIndex) {
+
+        
         final item = trendingList[index];
 
         return Builder(
@@ -131,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     context: context,
                     backgroundColor: AppColors.bgDeep,
                     child: MediaDetailsBottomSheet(
+                      id: item.id,
                       title: item.displayTitle,
                       genresList: item.genreIds,
                       overview: item.overview ?? '',

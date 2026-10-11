@@ -35,12 +35,12 @@ class MediaCard extends StatelessWidget {
                   width: double.infinity,
                   fit: fit,
 
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(color: AppColors.purple),
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
                   ),
 
                   errorWidget: (context, url, error) =>
-                      Icon(Icons.error, color: AppColors.purple, size: 27),
+                      const Icon(Icons.error, color: AppColors.purple, size: 27),
                       
                 ),
               ),
@@ -78,7 +78,7 @@ class MediaCard extends StatelessWidget {
 
   Widget _movieRating(String rating) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
         color: AppColors.midNight,
         borderRadius: BorderRadius.circular(4),
@@ -87,10 +87,10 @@ class MediaCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
         children: [
-          Icon(Icons.star, color: AppColors.warmAmber, size: 13),
+          const Icon(Icons.star, color: AppColors.warmAmber, size: 13),
           Text(
             rating,
-            style: TextStyle(fontSize: 12, color: AppColors.warmAmber),
+            style: const TextStyle(fontSize: 12, color: AppColors.warmAmber),
           ),
         ],
       ),

@@ -12,22 +12,17 @@ class FetchTopRatedTvShowEvent extends TvShowEvent {}
 
 class FetchMoreTopRatedTvShowEvent extends TvShowEvent {}
 
-class FetchGenreTvShowEvent extends TvShowEvent {
+class FetchSelectDiscoverTvShowEvent extends TvShowEvent {
 
   final int genre;
 
-  FetchGenreTvShowEvent({required this.genre});
+  FetchSelectDiscoverTvShowEvent({required this.genre});
 }
 
-class FetchMoreGenreTvShowEvent extends TvShowEvent {
+class FetchMoreSelectDiscoverTvShowEvent extends TvShowEvent {
 
   final int genre;
 
-  FetchMoreGenreTvShowEvent({required this.genre});
+  FetchMoreSelectDiscoverTvShowEvent({required this.genre});
 }
 
-class FetchTvShowVideoEvent extends TvShowEvent {
-  final int videoId;
-
-  FetchTvShowVideoEvent ({required this.videoId});
-}

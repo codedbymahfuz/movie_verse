@@ -16,9 +16,6 @@ class FetchNewMovieEvent extends MovieEvent {}
 
 class FetchMoreNewMovieEvent extends MovieEvent {}
 
-class FetchAllMovieEvent extends MovieEvent {}
-
-class FetchMoreAllMovieEvent extends MovieEvent {}
 
 
 

@@ -1,4 +1,4 @@
-import 'package:movie_verse/features/movie/domain/entities/genres_movie_list_entity.dart';
+import 'package:movie_verse/features/movie/domain/entities/genre/genres_movie_list_entity.dart';
 
 class GenresMovieListModel extends GenresMovieListEntity {
   GenresMovieListModel({required super.id, required super.name});

@@ -1,5 +1,5 @@
-import 'package:movie_verse/features/movie/data/model/genres_movie_list_model.dart';
-import 'package:movie_verse/features/movie/domain/entities/genre_movie_entity.dart';
+import 'package:movie_verse/features/movie/data/model/genre/genres_movie_list_model.dart';
+import 'package:movie_verse/features/movie/domain/entities/genre/genre_movie_entity.dart';
 
 class GenresMovieModel extends GenresTvShowEntity {
   GenresMovieModel({required super.genres});

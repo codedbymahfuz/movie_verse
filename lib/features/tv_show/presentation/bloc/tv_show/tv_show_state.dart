@@ -1,6 +1,5 @@
 import 'package:movie_verse/features/tv_show/domain/entities/tv_show_entity.dart';
 
-
 abstract class TvShowState {}
 
 class TvShowInitialState extends TvShowState {}
@@ -29,8 +28,6 @@ class TvShowLoadedState extends TvShowState {
     );
   }
 }
-
-
 
 class TvShowErrorState extends TvShowState {
   final String errorMessage;

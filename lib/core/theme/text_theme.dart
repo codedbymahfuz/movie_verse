@@ -19,15 +19,15 @@ class AppTextTheme {
       ),
 
 
-      labelLarge: TextStyle(
+      labelLarge: const TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.5,
       ),
 
-       labelMedium: TextStyle(fontSize: 15, color: AppColors.secondary),
+       labelMedium: const TextStyle(fontSize: 15, color: AppColors.secondary),
 
-      bodyMedium: TextStyle(
+      bodyMedium: const TextStyle(
         color: AppColors.coolGray,
         fontSize: 15,
         fontWeight: FontWeight.w400,

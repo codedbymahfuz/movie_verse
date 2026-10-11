@@ -8,7 +8,13 @@ import 'package:movie_verse/core/widgets/media_card.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/core/widgets/media_grid_view.dart';
-
+import 'package:movie_verse/features/tv_show/domain/entities/tv_show_result_entity.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/genres/tv_show_genres_bloc.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/genres/tv_show_genres_event.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/genres/tv_show_genres_state.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_bloc.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_event.dart';
+import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_state.dart';
 
 class TvShowExploreScreen extends StatefulWidget {
   const TvShowExploreScreen({super.key});
@@ -19,66 +25,147 @@ class TvShowExploreScreen extends StatefulWidget {
 
 class _TvShowExploreScreenState extends State<TvShowExploreScreen> {
   @override
+  void initState() {
+    super.initState();
+    context.read<TvShowBloc>().add(FetchAllTvShowEvent());
+    context.read<TvShowGenresBloc>().add(FetchTvShowGenresItemEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10),
+    return BlocBuilder<TvShowBloc, TvShowState>(
+      builder: (context, state) {
+        if (state is TvShowLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-        GestureDetector(
-          onTap: () {
-            BottomSheetHelper.show(
-              context: context,
-              backgroundColor: AppColors.bgDeep,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.sizeOf(context).height * 0.8,
-                ),
-                child: BlocBuilder<GenreCubit, int?>(
-                  builder: (context, state) {
-                    return GenreGirdView(
-                      titleGenre: 'Mahfuz',
-                      selectGenre: state,
-                      itemCount: 10,
+        if (state is TvShowErrorState) {
+          return Center(child: Text("Error - ${state.errorMessage} "));
+        }
 
-                      onTap: (index) {
-                        context.read<GenreCubit>().selectGenre(index);
+        if (state is TvShowLoadedState) {
+          final tvShowExplore = state.tvShowList.results;
 
-                       Navigator.pop(context);
-                      },
-                    );
-                  },
-                ),
-              ),
-            );
-          },
-          child: GenreButton(),
-        ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
 
-        const SizedBox(height: 10),
+              _genreFilterButton(context),
 
-        Expanded(
-            child: MediaGridView(
-               items: [1],
-              onTap: (index) {
-                BottomSheetHelper.show(
-                  context: context,
-                  backgroundColor: AppColors.bgDeep,
-                  child: MediaDetailsBottomSheet(
-                    title: "Spider- Man - $index",
-                    overview: "movie.overview",
-                    rating: 2.5, releaseDate: '',
-                  ),
-                );
-              },
-              itemBuilder: (item) {
-                return MediaCard(title: "", imageUrl: "", rating: 1.0);
-              },
-            ),
-          ),
-      ],
+              const SizedBox(height: 10),
+
+              Expanded(child: _tvShowList(tvShowExplore, state, context)),
+            ],
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
     );
   }
 
-  
+  Widget _genreFilterButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        BottomSheetHelper.show(
+          context: context,
+          backgroundColor: AppColors.bgDeep,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+            ),
+            child: BlocBuilder<TvShowGenresBloc, TvShowGenresItemState>(
+              builder: (context, state) {
+                if (state is TvShowMovieGenresItemLoadingState) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (state is TvShowGenresItemErrorState) {}
+
+                if (state is TvShowGenresItemLoadedState) {
+                  final genresList = state.genres.genres;
+
+                  return BlocBuilder<GenreCubit, int?>(
+                    builder: (context, selectedGenreId) {
+                      return GenreGridView(
+                        genreItems: genresList,
+                        selectedGenreId: selectedGenreId,
+                        itemName: (item) => item.name,
+                        itemId: (item) => item.id,
+
+                        onTap: (genreId) {
+                          context.read<GenreCubit>().selectGenre(genreId);
+
+                          if (genreId == null) {
+                            context.read<TvShowBloc>().add(
+                              FetchAllTvShowEvent(),
+                            );
+                          } else {
+                            context.read<TvShowBloc>().add(
+                              FetchSelectDiscoverTvShowEvent(genre: genreId),
+                            );
+                          }
+
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+        );
+      },
+      child: const GenreButton(),
+    );
+  }
+
+  MediaGridView<TvShowResultEntity> _tvShowList(
+    List<TvShowResultEntity> tvShowExplore,
+    TvShowLoadedState state,
+    BuildContext context,
+  ) {
+    return MediaGridView(
+      items: tvShowExplore,
+      isLoadingMore: state.isLoadingMore,
+      onLoadMore: () {
+        final selectedGenreId = context.read<GenreCubit>().state;
+
+        if (selectedGenreId == null) {
+          context.read<TvShowBloc>().add(FetchMoreAllTvShowEvent());
+        } else {
+          context.read<TvShowBloc>().add(
+            FetchMoreSelectDiscoverTvShowEvent(genre: selectedGenreId),
+          );
+        }
+      },
+      onTap: (item) {
+        BottomSheetHelper.show(
+          context: context,
+          backgroundColor: AppColors.bgDeep,
+          child: MediaDetailsBottomSheet(
+            id: item.id,
+            title: item.name,
+            overview: item.overview,
+            mediaType: 'tv',
+            image: item.backdropPath,
+            genresList: item.genreIds,
+            rating: item.voteAverage,
+            releaseDate: item.firstAirDate,
+          ),
+        );
+      },
+      itemBuilder: (item) {
+        return MediaCard(
+          title: item.name,
+          imageUrl: item.backdropPath,
+          rating: item.voteAverage,
+        );
+      },
+    );
+  }
 }

@@ -4,18 +4,16 @@ class FetchAllMovieEvent extends MovieExploreEvent {}
 
 class FetchMoreAllMovieEvent extends MovieExploreEvent {}
 
-class FetchSelectGenreEvent extends MovieExploreEvent {
+class FetchSelectDiscoverEvent extends MovieExploreEvent {
   final int genre;
 
-  FetchSelectGenreEvent({required this.genre});
+  FetchSelectDiscoverEvent({required this.genre});
 }
 
-class FetchMoreSelectGenreEvent extends MovieExploreEvent {
+class FetchMoreSelectDiscoverEvent extends MovieExploreEvent {
   final int genre;
 
-  FetchMoreSelectGenreEvent({required this.genre});
+  FetchMoreSelectDiscoverEvent({required this.genre});
 }
 
-class FetchDiscoverMovie extends MovieExploreEvent {}
 
-class FetchMoreDiscoverMovie extends MovieExploreEvent {}

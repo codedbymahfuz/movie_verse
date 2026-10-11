@@ -1,4 +1,4 @@
-import 'package:movie_verse/features/movie/data/model/genres_movie_model.dart';
+import 'package:movie_verse/features/movie/data/model/genre/genres_movie_model.dart';
 import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
 
 abstract class MovieRepository {
@@ -7,14 +7,14 @@ abstract class MovieRepository {
 
   Future<MovieEntity> getTopRatedMovies({required int page});
 
-  Future<MovieEntity> getUpComingMovie({required int page});
+  Future<MovieEntity> getUpComingMovies({required int page});
 
   Future<MovieEntity> getAllMovies({required int page});
 
-  Future<MovieEntity> getUpNewMovie({required int page});
+  Future<MovieEntity> getUpNewMovies({required int page});
 
-  Future<MovieEntity> getGenreMovie ({required int genre, required int page});
+  Future<MovieEntity> getDiscoverMovies ({required int genre, required int page});
 
-  Future<GenresMovieModel> getGenresMovieItem ();
+  Future<GenresMovieModel> getMovieGenresItem ();
 
 }

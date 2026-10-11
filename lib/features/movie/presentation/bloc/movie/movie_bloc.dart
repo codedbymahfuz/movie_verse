@@ -14,6 +14,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   int allMoviePage = 1;
   
   MovieBloc({required this.repository}) : super(MovieInitialState()) {
+    
     on<FetchPopularMovieEvent>((event, emit) async {
       popularPage = 1;
 
@@ -99,7 +100,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<FetchUpComingMovieEvent>((event, emit) async {
       upcomingPage = 1;
       try {
-        final upComingMovie = await repository.getUpComingMovie(
+        final upComingMovie = await repository.getUpComingMovies(
           page: upcomingPage,
         );
 
@@ -120,7 +121,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         await PaginationUtil.fetchMoreMovies(
           emit: emit,
           currentState: currentState,
-          movieFuture: repository.getUpComingMovie(page: upcomingPage),
+          movieFuture: repository.getUpComingMovies(page: upcomingPage),
         );
       } catch (e) {
         upcomingPage--;
@@ -137,7 +138,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<FetchNewMovieEvent>((event, emit) async {
       newMoviePage = 1;
       try {
-        final newMovieList = await repository.getUpNewMovie(page: newMoviePage);
+        final newMovieList = await repository.getUpNewMovies(page: newMoviePage);
 
         emit(MovieLoadedState(movieList: newMovieList));
       } catch (e) {
@@ -156,7 +157,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         await PaginationUtil.fetchMoreMovies(
           emit: emit,
           currentState: currentState,
-          movieFuture: repository.getUpNewMovie(page: newMoviePage),
+          movieFuture: repository.getUpNewMovies(page: newMoviePage),
         );
       } catch (e) {
         newMoviePage--;
@@ -169,9 +170,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         );
       }
     });
-
-    
-
    
   }
 }

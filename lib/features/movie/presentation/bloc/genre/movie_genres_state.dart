@@ -1,19 +1,19 @@
-import 'package:movie_verse/features/movie/domain/entities/genre_movie_entity.dart';
+import 'package:movie_verse/features/movie/domain/entities/genre/genre_movie_entity.dart';
 
-abstract class MovieGenresState {}
+abstract class MovieGenresItemState {}
 
-class MovieGenresInitialState extends MovieGenresState {}
+class MovieGenresItemInitialState extends MovieGenresItemState {}
 
-class MovieGenresLoadingState extends MovieGenresState {}
+class MovieGenresItemLoadingState extends MovieGenresItemState {}
 
-class MovieGenresLoadedState extends MovieGenresState {
+class MovieGenresItemLoadedState extends MovieGenresItemState {
   final GenresTvShowEntity genres;
 
-  MovieGenresLoadedState({required this.genres});
+  MovieGenresItemLoadedState({required this.genres});
 }
 
-class MovieGenresErrorState extends MovieGenresState {
+class MovieGenresItemErrorState extends MovieGenresItemState {
   final String errorMessage;
 
-  MovieGenresErrorState({required this.errorMessage});
+  MovieGenresItemErrorState({required this.errorMessage});
 }

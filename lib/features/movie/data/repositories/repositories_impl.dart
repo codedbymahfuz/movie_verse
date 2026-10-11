@@ -1,5 +1,5 @@
 import 'package:movie_verse/features/movie/data/datasource/movie_remote_data_source.dart';
-import 'package:movie_verse/features/movie/data/model/genres_movie_model.dart';
+import 'package:movie_verse/features/movie/data/model/genre/genres_movie_model.dart';
 import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
 import 'package:movie_verse/features/movie/domain/repositories/repositories.dart';
 
@@ -19,7 +19,7 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<MovieEntity> getUpComingMovie({required int page}) async {
+  Future<MovieEntity> getUpComingMovies({required int page}) async {
     return await remoteDataSource.getUpComingMovies(page: page);
   }
 
@@ -29,20 +29,20 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<MovieEntity> getUpNewMovie({required int page}) async {
+  Future<MovieEntity> getUpNewMovies({required int page}) async {
     return await remoteDataSource.getNewMovie(page: page);
   }
 
   @override
-  Future<MovieEntity> getGenreMovie({
+  Future<MovieEntity> getDiscoverMovies({
     required int genre,
     required int page,
   }) async {
-    return await remoteDataSource.getGenreMovie(genre: genre, page: page);
+    return await remoteDataSource.getDiscoverMovies(genre: genre, page: page);
   }
 
   @override
-  Future<GenresMovieModel> getGenresMovieItem() async {
+  Future<GenresMovieModel> getMovieGenresItem() async {
     return await remoteDataSource.getMovieGenresItem();
   }
 }

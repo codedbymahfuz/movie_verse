@@ -36,15 +36,15 @@ class MediaGridView<T> extends StatelessWidget {
             if (isLoadingMore || onLoadMore == null) return false;
 
             if (notification.metrics.pixels >=
-                notification.metrics.maxScrollExtent - 30) {
+                notification.metrics.maxScrollExtent - 150) {
               onLoadMore!();
             }
 
             return false;
           },
-          
-           child: GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+
+          child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             itemCount: isLoadingMore
                 ? items.length + crossAxisCount
                 : items.length,
@@ -55,7 +55,7 @@ class MediaGridView<T> extends StatelessWidget {
               childAspectRatio: 0.65,
             ),
 
-             itemBuilder: (context, index) {
+            itemBuilder: (context, index) {
               if (index >= items.length) {
                 return _buildDefaultShimmerItem();
               }

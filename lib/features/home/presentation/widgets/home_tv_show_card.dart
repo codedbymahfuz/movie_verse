@@ -30,7 +30,7 @@ class HomeTvShowCard extends StatelessWidget {
           children: [
             Text(title, style: TextTheme.of(context).titleMedium),
 
-            Spacer(),
+            const Spacer(),
 
             TextButton(
               onPressed: moreOnPressed,
@@ -58,7 +58,9 @@ class HomeTvShowCard extends StatelessWidget {
                         context: context,
                         backgroundColor: AppColors.bgDeep,
                         child: MediaDetailsBottomSheet(
+                          id: item.id,
                           title: item.name,
+                          mediaType: 'tv',
                           image: item.backdropPath,
                           overview: item.overview,
                           rating: item.voteAverage ,

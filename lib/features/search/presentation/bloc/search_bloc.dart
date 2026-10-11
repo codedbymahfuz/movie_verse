@@ -16,10 +16,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc({required this.repositories}) : super(SearchInitialState()) {
     on<FetchSearchEvent>(
       _onFetchSearch,
-      transformer: debounce(Duration(milliseconds: 500)),
+      transformer: debounce(const Duration(milliseconds: 500)),
     );
 
-    on<FetchMoreSearchEvent>(_onFetchMoreSearch, transformer: restartable());
+    on<FetchMoreSearchEvent>(_onFetchMoreSearch, transformer: sequential(),);
   }
 
   Future<void> _onFetchSearch(
@@ -70,6 +70,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     _currentPage++;
 
+
     try {
       await PaginationUtil.fetchMoreSearchResults(
         emit: emit,
@@ -79,6 +80,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           page: _currentPage,
         ),
       );
+     
     } catch (e) {
       _currentPage--;
 

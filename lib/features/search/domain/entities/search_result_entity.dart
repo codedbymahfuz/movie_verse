@@ -3,7 +3,7 @@
 class SearchResultsEntity {
   bool? adult;
   String? backdropPath;
-  int? id;
+  int id;
   String? title;
   String? originalLanguage;
   String? originalTitle;
@@ -24,7 +24,7 @@ class SearchResultsEntity {
   SearchResultsEntity(
       {this.adult,
       this.backdropPath,
-      this.id,
+      required this.id,
       this.title,
       this.originalLanguage,
       this.originalTitle,
@@ -49,32 +49,13 @@ class SearchResultsEntity {
     return "Unknow name";
   }
 
-  String get displayPath {
+   String get displayPath {
     return posterPath ?? backdropPath ?? '';
+  }
+
+   String get mediareleaseDate {
+    return releaseDate ?? firstAirDate ?? '';
   }
   
 
-  // SearchResultsEntity.fromJson(Map<String, dynamic> json) {
-  //   adult = json['adult'];
-  //   backdropPath = json['backdrop_path'];
-  //   id = json['id'];
-  //   title = json['title'];
-  //   originalLanguage = json['original_language'];
-  //   originalTitle = json['original_title'];
-  //   overview = json['overview'];
-  //   posterPath = json['poster_path'];
-  //   mediaType = json['media_type'];
-  //   genreIds = json['genre_ids']?.cast<int>();
-  //   popularity = json['popularity'];
-  //   releaseDate = json['release_date'];
-  //   video = json['video'];
-  //   voteAverage = json['vote_average'];
-  //   voteCount = json['vote_count'];
-  //   name = json['name'];
-  //   originalName = json['original_name'];
-  //   firstAirDate = json['first_air_date'];
-  //   originCountry = (json['origin_country'] as List?)?.cast<String>() ?? [];
-  // }
-
-  
 }

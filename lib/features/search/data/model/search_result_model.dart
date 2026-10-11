@@ -4,7 +4,7 @@ class SearchResultModel extends SearchResultsEntity {
   SearchResultModel({
     super.adult,
     super.backdropPath,
-    super.id,
+    required super.id,
     super.title,
     super.originalLanguage,
     super.originalTitle,
@@ -23,26 +23,28 @@ class SearchResultModel extends SearchResultsEntity {
     super.originCountry,
   });
 
-  SearchResultModel.fromJson(Map<String, dynamic> json) {
-    adult = json['adult'];
-    backdropPath = json['backdrop_path'];
-    id = json['id'];
-    title = json['title'] ?? name;
-    originalLanguage = json['original_language'];
-    originalTitle = json['original_title'];
-    overview = json['overview'];
-    posterPath = json['poster_path'];
-    mediaType = json['media_type'];
-    genreIds = json['genre_ids']?.cast<int>();
-    popularity = json['popularity'];
-    releaseDate = json['release_date'];
-    video = json['video'];
-    voteAverage = json['vote_average'];
-    voteCount = json['vote_count'];
-    name = json['name'] ?? title;
-    originalName = json['original_name'];
-    firstAirDate = json['first_air_date'];
-    originCountry = (json['origin_country'] as List?)?.cast<String>() ?? [];
+  factory SearchResultModel.fromJson(Map<String, dynamic> json) {
+    return SearchResultModel(
+    adult : json['adult'],
+    backdropPath : json['backdrop_path'],
+    id : json['id'],
+    title : json['title'],
+    originalLanguage : json['original_language'],
+    originalTitle : json['original_title'],
+    overview : json['overview'],
+    posterPath : json['poster_path'],
+    mediaType : json['media_type'],
+    genreIds : json['genre_ids']?.cast<int>(),
+    popularity : json['popularity'],
+    releaseDate : json['release_date'],
+    video : json['video'],
+    voteAverage : json['vote_average'],
+    voteCount : json['vote_count'],
+    name : json['name'],
+    originalName : json['original_name'],
+    firstAirDate : json['first_air_date'],
+    originCountry : (json['origin_country'] as List?)?.cast<String>() ?? [],
+    );
   }
 
   @override

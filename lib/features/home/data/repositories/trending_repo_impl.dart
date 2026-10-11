@@ -7,12 +7,8 @@ class TrendingRepoImpl implements TrendingRepositories {
   TrendingRepoImpl({required this.remoteDataSource});
 
   @override
-  Future<List<TrendingResulstEntity>> getTrendingAll({
-    required String timeWindow,
-  }) async {
-    final response = await remoteDataSource.getTrendingAll(
-      timeWindow: timeWindow,
-    );
+  Future<List<TrendingResulstEntity>> getTrendingAll() async {
+    final response = await remoteDataSource.getTrendingAll();
 
     final filteredResults = response.results
         .where((t) => t.mediaType == "movie" || t.mediaType == "tv")

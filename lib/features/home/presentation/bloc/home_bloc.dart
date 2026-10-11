@@ -23,23 +23,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       try {
         final results = await Future.wait([
-          trendingRepositories.getTrendingAll(timeWindow: event.timeWindow),
+          trendingRepositories.getTrendingAll(),
           movieRepository.getPopularMovies(page: 1),
-          movieRepository.getUpNewMovie(page: 1),
-          movieRepository.getUpComingMovie(page: 1),
+          movieRepository.getUpNewMovies(page: 1),
+          movieRepository.getUpComingMovies(page: 1),
           movieRepository.getTopRatedMovies(page: 1),
           tvShowRepository.getPopularTvShow(page: 1),
           tvShowRepository.getTopRatedTvShow(page: 1),
         ]);
-
-        // final popularMovie = await movieRepository.getPopularMovies(page: 1);
-        // final newMovie = await movieRepository.getUpNewMovie(page: 1);
-        // final upComingMovie = await movieRepository.getUpNewMovie(page: 1);
-        // final topRatedMovie = await movieRepository.getUpNewMovie(page: 1);
-        // final popularTvShow = await tvShowRepository.getPopularTvShow(page: 1);
-        // final topRatedTvShow = await tvShowRepository.getTopRatedTvShow(
-        //   page: 1,
-        // );
 
         emit(
           HomeLoadedState(
@@ -62,9 +53,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final currentState = state as HomeLoadedState;
 
         try {
-          final trendingList = await trendingRepositories.getTrendingAll(
-            timeWindow: event.timeWindow,
-          );
+          final trendingList = await trendingRepositories.getTrendingAll();
 
           emit(currentState.copyWith(trendingList: trendingList));
         } catch (e) {

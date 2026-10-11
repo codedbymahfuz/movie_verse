@@ -12,8 +12,8 @@ class BottomSheetHelper {
       isScrollControlled: true,
       elevation: 88,
       backgroundColor: backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.vertical(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
           top: Radius.circular(25),
         ),
           side: BorderSide(

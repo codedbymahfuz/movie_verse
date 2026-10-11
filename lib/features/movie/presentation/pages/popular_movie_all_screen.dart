@@ -6,6 +6,7 @@ import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/core/widgets/media_grid_view.dart';
 import 'package:movie_verse/core/widgets/page_header.dart';
+import 'package:movie_verse/features/movie/domain/entities/movie_result_entity.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_bloc.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_event.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_state.dart';
@@ -18,12 +19,12 @@ class PopularMovieAllScreen extends StatefulWidget {
 }
 
 class _PopularMovieAllScreenState extends State<PopularMovieAllScreen> {
-
   @override
   void initState() {
     super.initState();
     context.read<MovieBloc>().add(FetchPopularMovieEvent());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,59 +34,63 @@ class _PopularMovieAllScreenState extends State<PopularMovieAllScreen> {
         children: [
           const SizedBox(height: 20),
 
-          PageHeader(title: "Popular Movie"),
+          const PageHeader(title: "Popular Movie"),
 
           Expanded(
             child: BlocBuilder<MovieBloc, MovieState>(
               builder: (context, state) {
                 if (state is MovieLoadingState) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (state is MovieLoadedState) {
                   final movies = state.movieList.results;
-                  return MediaGridView(
-                    items: movies,
-                    isLoadingMore: state.isLoadingMore,
-                    onLoadMore: () {
-                      context.read<MovieBloc>().add(FetchMorePopularMovieEvent());
-                    },
-                    onTap: (item) {
-                      BottomSheetHelper.show(
-                        context: context,
-                        backgroundColor: AppColors.bgDeep,
-                        child: MediaDetailsBottomSheet(
-                          title: item.title,
-                          image: item.posterPath,
-                          overview: item.overview,
-                          rating: item.voteAverage,
-                          releaseDate: item.releaseDate,
-                          genresList: item.genreIds,
-                        ),
-                      );
-                    },
-                    itemBuilder: (item) {
-                      return MediaCard(
-                        title: item.title,
-                        imageUrl: item.posterPath,
-                        rating: item.voteAverage,
-                      );
-                    },
-                  );
-
-                  
+                  return _popularMovieList(movies, state, context);
                 }
 
-                  
-
-             return const SizedBox.shrink();
-
+                return const SizedBox.shrink();
               },
-
             ),
           ),
         ],
       ),
+    );
+  }
+
+  MediaGridView<MovieResultEntity> _popularMovieList(
+    List<MovieResultEntity> movies,
+    MovieLoadedState state,
+    BuildContext context,
+  ) {
+    return MediaGridView(
+      items: movies,
+      isLoadingMore: state.isLoadingMore,
+      onLoadMore: () {
+        context.read<MovieBloc>().add(FetchMorePopularMovieEvent());
+      },
+      onTap: (item) {
+        BottomSheetHelper.show(
+          context: context,
+          backgroundColor: AppColors.bgDeep,
+          child: MediaDetailsBottomSheet(
+            id: item.id,
+            title: item.title,
+            image: item.posterPath,
+            mediaType: 'movie',
+            overview: item.overview,
+            rating: item.voteAverage,
+            releaseDate: item.releaseDate,
+            genresList: item.genreIds,
+          ),
+        );
+      },
+      itemBuilder: (item) {
+        return MediaCard(
+          title: item.title,
+          imageUrl: item.posterPath,
+          rating: item.voteAverage,
+        );
+      },
     );
   }
 }

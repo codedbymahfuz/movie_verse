@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_verse/core/theme/app_colors.dart';
 import 'package:movie_verse/core/theme/text_theme.dart';
 import 'package:movie_verse/app/pages/main_navigation_screen.dart';
 
@@ -9,8 +10,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(textTheme: AppTextTheme.textTheme(), useMaterial3: true),
-      home: BotomNavigationBar(),
+      theme: ThemeData(
+        textTheme: AppTextTheme.textTheme(), 
+        useMaterial3: true,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: AppColors.purple,
+        )
+        ),
+      home: const BotomNavigationBar(),
     );
   }
 }

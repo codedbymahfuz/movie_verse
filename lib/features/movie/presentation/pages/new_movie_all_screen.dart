@@ -6,6 +6,7 @@ import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
 import 'package:movie_verse/core/widgets/media_grid_view.dart';
 import 'package:movie_verse/core/widgets/page_header.dart';
+import 'package:movie_verse/features/movie/domain/entities/movie_result_entity.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_bloc.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_event.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_state.dart';
@@ -33,46 +34,18 @@ class _NewMovieAllScreenState extends State<NewMovieAllScreen> {
         children: [
           const SizedBox(height: 20),
 
-          PageHeader(title: "Latest Movie"),
+          const PageHeader(title: "Latest Movie"),
 
           Expanded(
             child: BlocBuilder<MovieBloc, MovieState>(
               builder: (context, state) {
                 if (state is MovieLoadingState) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (state is MovieLoadedState) {
-
                   final newMovie = state.movieList.results;
-                  
-                  return MediaGridView(
-                    items: newMovie,
-                    isLoadingMore: state.isLoadingMore,
-                    onLoadMore: () {
-                      context.read<MovieBloc>().add(FetchMoreNewMovieEvent());
-                    },
-                    onTap: (item) {
-                      BottomSheetHelper.show(
-                        context: context,
-                        backgroundColor: AppColors.bgDeep,
-                        child: MediaDetailsBottomSheet(
-                          title: item.title,
-                          image: item.posterPath,
-                          overview: item.overview,
-                          genresList: item.genreIds,
-                          rating: item.voteAverage,
-                          releaseDate: item.releaseDate,
-                        ),
-                      );
-                    },
-                     itemBuilder: (item) {
-                      return MediaCard(
-                        title: item.title, 
-                        imageUrl: item.posterPath, 
-                        rating: item.voteAverage,
-                      );
-                    },
-                  );
+
+                  return _newMovieList(newMovie, state, context);
                 }
 
                 return const SizedBox.shrink();
@@ -81,6 +54,43 @@ class _NewMovieAllScreenState extends State<NewMovieAllScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  MediaGridView<MovieResultEntity> _newMovieList(
+    List<MovieResultEntity> newMovie,
+    MovieLoadedState state,
+    BuildContext context,
+  ) {
+    return MediaGridView(
+      items: newMovie,
+      isLoadingMore: state.isLoadingMore,
+      onLoadMore: () {
+        context.read<MovieBloc>().add(FetchMoreNewMovieEvent());
+      },
+      onTap: (item) {
+        BottomSheetHelper.show(
+          context: context,
+          backgroundColor: AppColors.bgDeep,
+          child: MediaDetailsBottomSheet(
+            id: item.id,
+            title: item.title,
+            mediaType: 'movie',
+            image: item.posterPath,
+            overview: item.overview,
+            genresList: item.genreIds,
+            rating: item.voteAverage,
+            releaseDate: item.releaseDate,
+          ),
+        );
+      },
+      itemBuilder: (item) {
+        return MediaCard(
+          title: item.title,
+          imageUrl: item.posterPath,
+          rating: item.voteAverage,
+        );
+      },
     );
   }
 }

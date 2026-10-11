@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/helpers/genre_helper.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
-import 'package:movie_verse/core/widgets/media_card.dart';
+import 'package:movie_verse/core/widgets/empty_trailer_placeholder.dart';
+import 'package:movie_verse/core/widgets/trailer_player_card.dart';
+import 'package:movie_verse/features/video/presentation/bloc/video_bloc.dart';
+import 'package:movie_verse/features/video/presentation/bloc/video_event.dart';
+import 'package:movie_verse/features/video/presentation/bloc/video_state.dart';
 
-class MediaDetailsBottomSheet extends StatelessWidget {
+class MediaDetailsBottomSheet extends StatefulWidget {
   final String title;
   final String? image;
   final List<int>? genresList;
@@ -11,6 +16,7 @@ class MediaDetailsBottomSheet extends StatelessWidget {
   final String? releaseDate;
   final double? rating;
   final String? mediaType;
+  final int id;
   final BoxFit? fit;
 
   const MediaDetailsBottomSheet({
@@ -22,18 +28,39 @@ class MediaDetailsBottomSheet extends StatelessWidget {
     this.genresList,
     required this.releaseDate,
     this.mediaType,
+    required this.id,
     this.fit,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final ratingText = rating != null ? rating!.toStringAsFixed(1) : "";
+  State<MediaDetailsBottomSheet> createState() =>
+      _MediaDetailsBottomSheetState();
+}
 
-    bool checkMediaType = mediaType != null ? true : false;
-    final currentMedia = mediaType == "movie" ? "Movie" : "Tv";
-    
-    final DateTime? date = releaseDate?.isNotEmpty == true
-        ? DateTime.tryParse(releaseDate!)
+class _MediaDetailsBottomSheetState extends State<MediaDetailsBottomSheet> {
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<VideoBloc>().add(
+      FetchTrailerVideoEvent(
+        mediaType: widget.mediaType.toString(),
+        videoId: widget.id,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ratingText = widget.rating != null
+        ? widget.rating!.toStringAsFixed(1)
+        : "";
+
+    bool checkMediaType = widget.mediaType != null ? true : false;
+    final currentMedia = widget.mediaType == "movie" ? "Movie" : "Tv";
+
+    final DateTime? date = widget.releaseDate?.isNotEmpty == true
+        ? DateTime.tryParse(widget.releaseDate!)
         : null;
 
     return Padding(
@@ -44,41 +71,45 @@ class MediaDetailsBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _previousScreen(context),
-        
+
             const SizedBox(height: 10),
 
+            BlocBuilder<VideoBloc, VideoState>(
+              builder: (context, state) {
+                if (state is TrailerVideoLoadingState) {}
+                if (state is TrailerVideoLoadedState) {
+                  final videos = state.videoResults;
 
-            AspectRatio(aspectRatio: 16/9, 
-            child: MediaCard(
-                title: title,
-                imageUrl: image ?? '',
-                titleShow: false,
-                fit: BoxFit.fitWidth,
-              ),
-          ),
-        
-            // SizedBox(
-            //   height: 200,
-            //   child: MediaCard(
-            //     title: title,
-            //     imageUrl: image ?? '',
-            //     titleShow: false,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-        
+                  if (videos.isEmpty) {
+                    return EmptyTrailerPlaceholder(image: widget.image);
+                  }
+
+                  final trailer = videos.first;
+
+                  return TrailerPlayerCard(
+                    videoKey: trailer.key!,
+                    thumbnailUrl: widget.image,
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
+            ),
+
             const SizedBox(height: 7),
-        
-            Text(title, maxLines: 3, style: TextTheme.of(context).titleLarge),
-        
+
+            Text(
+              widget.title,
+              maxLines: 3,
+              style: TextTheme.of(context).titleLarge,
+            ),
+
             const SizedBox(height: 10),
-        
+
             _movieInfo(context: context, date: date, rating: ratingText),
-        
+
             const SizedBox(height: 15),
-        
-           
-        
+
             checkMediaType
                 ? Text(
                     currentMedia,
@@ -87,26 +118,30 @@ class MediaDetailsBottomSheet extends StatelessWidget {
                     ),
                   )
                 : const SizedBox.shrink(),
-            checkMediaType ? const SizedBox(height: 15) : const SizedBox.shrink(),
-        
-            if (genresList != null && genresList!.isNotEmpty)
-              if (genresList != null && genresList!.isNotEmpty)
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: GenreHelper.getGenreNames(genresList!).map((
-                    genreName,
-                  ) {
-                    return _genereName(genreName, context);
-                  }).toList(),
-                ),
-        
+            checkMediaType
+                ? const SizedBox(height: 15)
+                : const SizedBox.shrink(),
+
+            if (widget.genresList != null && widget.genresList!.isNotEmpty)
+              if (widget.genresList != null && widget.genresList!.isNotEmpty)
+                _genresInfo(context),
+
             const SizedBox(height: 15),
-        
-            Text(overview, style: TextTheme.of(context).bodyMedium),
+
+            Text(widget.overview, style: TextTheme.of(context).bodyMedium),
           ],
         ),
       ),
+    );
+  }
+
+  Wrap _genresInfo(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: GenreHelper.getGenreNames(widget.genresList!).map((genreName) {
+        return _genereName(genreName, context);
+      }).toList(),
     );
   }
 
@@ -126,7 +161,7 @@ class MediaDetailsBottomSheet extends StatelessWidget {
 
         const SizedBox(width: 7),
 
-        Icon(Icons.star, color: AppColors.warmAmber, size: 17),
+        const Icon(Icons.star, color: AppColors.warmAmber, size: 17),
 
         const SizedBox(width: 5),
 
@@ -148,7 +183,7 @@ class MediaDetailsBottomSheet extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.cancel_rounded, color: AppColors.coolGray, size: 30),
+          icon: const Icon(Icons.cancel_rounded, color: AppColors.coolGray, size: 30),
         ),
       ],
     );
@@ -156,7 +191,7 @@ class MediaDetailsBottomSheet extends StatelessWidget {
 
   Widget _genereName(String name, BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       decoration: BoxDecoration(
         color: AppColors.midNight,
         borderRadius: BorderRadius.circular(40),
