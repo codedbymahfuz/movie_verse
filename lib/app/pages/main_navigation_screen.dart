@@ -30,7 +30,7 @@ class _BotomNavigationBarState extends State<BotomNavigationBar> {
         backgroundColor: AppColors.bgDeep,
         elevation: 25,
         title: Text(
-          "Cine Verse",
+          "Movie Verse",
           style: TextTheme.of(context).titleLarge?.copyWith(
             color: AppColors.appBarTitleColor,
            ),

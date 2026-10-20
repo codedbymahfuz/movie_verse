@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/core/error/app_exception.dart';
 import 'package:movie_verse/core/utils/pagination_util.dart';
 import 'package:movie_verse/features/movie/domain/repositories/repositories.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/explore/movie_explore_event.dart';
@@ -26,7 +27,8 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
           ),
         );
       } catch (e) {
-        emit(MovieExploreErrorState(errorMessage: e.toString()));
+       
+        emit(MovieExploreErrorState(errorType: mapExceptionToErrorType(e),),);
       }
     });
 
@@ -75,7 +77,7 @@ class MovieExploreBloc extends Bloc<MovieExploreEvent, MovieExploreState> {
           ),
         );
       } catch (e) {
-        emit(MovieExploreErrorState(errorMessage: e.toString()));
+       emit(MovieExploreErrorState(errorType: mapExceptionToErrorType(e),),);
       }
     });
 

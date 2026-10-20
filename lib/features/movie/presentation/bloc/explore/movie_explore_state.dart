@@ -1,4 +1,5 @@
- import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
+ import 'package:movie_verse/core/error/app_error_type.dart';
+import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
 
 
 abstract class MovieExploreState {}
@@ -34,8 +35,8 @@ abstract class MovieExploreState {}
 
 
  class MovieExploreErrorState extends MovieExploreState {
-  final String errorMessage;
+  final AppErrorType errorType;
 
-  MovieExploreErrorState({required this.errorMessage});
+  MovieExploreErrorState({required this.errorType});
 }
  

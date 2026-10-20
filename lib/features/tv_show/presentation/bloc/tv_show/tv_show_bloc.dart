@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/core/error/app_exception.dart';
 import 'package:movie_verse/core/utils/pagination_util.dart';
 import 'package:movie_verse/features/tv_show/domain/repositories/repositories.dart';
 import 'package:movie_verse/features/tv_show/presentation/bloc/tv_show/tv_show_event.dart';
@@ -23,7 +24,8 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
 
         emit(TvShowLoadedState(tvShowList: allTvShow));
       } catch (e) {
-        emit(TvShowErrorState(errorMessage: e.toString()));
+       
+        emit(TvShowErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 
@@ -71,7 +73,7 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
           ),
         );
       } catch (e) {
-        emit(TvShowErrorState(errorMessage: e.toString()));
+        emit(TvShowErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 
@@ -116,7 +118,7 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
           ),
         );
       } catch (e) {
-        emit(TvShowErrorState(errorMessage: e.toString()));
+       emit(TvShowErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 
@@ -163,7 +165,7 @@ class TvShowBloc extends Bloc<TvShowEvent, TvShowState> {
           ),
         );
       } catch (e) {
-        emit(TvShowErrorState(errorMessage: e.toString()));
+       emit(TvShowErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 

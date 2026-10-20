@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/core/widgets/error_retry_view.dart';
 import 'package:movie_verse/core/widgets/media_card.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
@@ -19,6 +20,11 @@ class PopularTvShowAllScreen extends StatefulWidget {
 }
 
 class _PopularTvShowAllScreenState extends State<PopularTvShowAllScreen> {
+
+  Future<void> _popularTvShowPageRefresh() async {
+    context.read<TvShowBloc>().add(FetchPopularTvShowEvent());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +54,13 @@ class _PopularTvShowAllScreenState extends State<PopularTvShowAllScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
+                if (state is TvShowErrorState) {
+                  return ErrorRetryView(
+                    onRefresh: _popularTvShowPageRefresh,
+                    appErrorType: state.errorType,
+                  );
+                }
+
                 if (state is TvShowLoadedState) {
                   final popular = state.tvShowList.results;
 
@@ -71,6 +84,7 @@ class _PopularTvShowAllScreenState extends State<PopularTvShowAllScreen> {
     return MediaGridView(
       items: popular,
       isLoadingMore: state.isLoadingMore,
+      isHasMore: state.hasMore,
       onLoadMore: () {
         context.read<TvShowBloc>().add(FetchMorePopularTvShowEvent());
       },

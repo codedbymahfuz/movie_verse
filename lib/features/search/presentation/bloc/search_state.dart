@@ -1,3 +1,4 @@
+import 'package:movie_verse/core/error/app_error_type.dart';
 import 'package:movie_verse/features/search/domain/entities/search_result_entity.dart';
 
 abstract class SearchState {}
@@ -31,7 +32,7 @@ class SearchLoadedState extends SearchState {
 }
 
 class SearchErrorState extends SearchState {
-  final String message;
+  final AppErrorType errorType;
 
-  SearchErrorState({required this.message});
+  SearchErrorState({required this.errorType});
 }

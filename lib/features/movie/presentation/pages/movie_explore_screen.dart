@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/cubit/genre_cubit.dart';
+import 'package:movie_verse/core/cubit/network_cubit.dart';
+import 'package:movie_verse/core/widgets/error_retry_view.dart';
 import 'package:movie_verse/core/widgets/genre_button.dart';
 import 'package:movie_verse/core/widgets/genre_girdview.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
@@ -24,6 +26,15 @@ class MovieExploreScreen extends StatefulWidget {
 }
 
 class _MovieExploreScreenState extends State<MovieExploreScreen> {
+  Future<void> _movieExplorePageRefresh() async {
+    context.read<MovieExploreBloc>().add(FetchAllMovieEvent());
+    context.read<MovieGenresBloc>().add(FetchMovieGenresItemEvent());
+  }
+
+  Future<void> _movieGenreItemRefresh() async {
+    context.read<MovieGenresBloc>().add(FetchMovieGenresItemEvent());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -34,141 +45,159 @@ class _MovieExploreScreenState extends State<MovieExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MovieExploreBloc, MovieExploreState>(
-      builder: (context, state) {
-        if (state is MovieExploreLoading) {
-          return const Center(child: CircularProgressIndicator(),);
+    return BlocListener<NetworkCubit, bool>(
+      listener: (context, isConnected) {
+        if (isConnected) {
+          _movieExplorePageRefresh();
         }
-
-        if (state is MovieExploreLoaded) {
-
-          final movieExplore = state.movieList.results;
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              
-              const SizedBox(height: 10),
-
-              _genreFilterButton(context),
-
-              const SizedBox(height: 10),
-
-              _movieList(movieExplore, state, context),
-
-            ],
-          );
-        }
-        return const SizedBox.shrink();
       },
+        child: BlocBuilder<MovieExploreBloc, MovieExploreState>(
+        builder: (context, state) {
+          if (state is MovieExploreLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is MovieExploreErrorState) {
+            return ErrorRetryView(
+              onRefresh: _movieExplorePageRefresh,
+              appErrorType: state.errorType,
+            );
+          }
+
+          if (state is MovieExploreLoaded) {
+            final movieExplore = state.movieList.results;
+
+            return RefreshIndicator(
+              onRefresh: _movieExplorePageRefresh,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+
+                  _genreFilterButton(context),
+
+                  const SizedBox(height: 10),
+
+                  _movieList(movieExplore, state, context),
+                ],
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 
   Widget _genreFilterButton(BuildContext context) {
     return GestureDetector(
-              onTap: () {
-                BottomSheetHelper.show(
-                  context: context,
-                  backgroundColor: AppColors.bgDeep,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.sizeOf(context).height * 0.8,
-                    ),
-                    child: BlocBuilder<MovieGenresBloc, MovieGenresItemState>(
-                      builder: (context, genreState) {
-                        if (genreState is MovieGenresItemLoadingState) {
-                          return const Center(child: CircularProgressIndicator());
-                        }
+      onTap: () {
+        BottomSheetHelper.show(
+          context: context,
+          backgroundColor: AppColors.bgDeep,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(context).height * 0.8,
+            ),
+            child: BlocBuilder<MovieGenresBloc, MovieGenresItemState>(
+              builder: (context, genreState) {
+                if (genreState is MovieGenresItemLoadingState) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                        if (genreState is MovieGenresItemErrorState) {
-                          return Text("Error - ${genreState.errorMessage}");
-                        }
+                if (genreState is MovieGenresItemErrorState) {
+                  return ErrorRetryView(
+                    onRefresh: _movieGenreItemRefresh,
+                    appErrorType: genreState.errorType,
+                  );
+                }
 
-                        if (genreState is MovieGenresItemLoadedState) {
-                          final genresList = genreState.genres.genres;
+                if (genreState is MovieGenresItemLoadedState) {
+                  final genresList = genreState.genres.genres;
 
-                          return BlocBuilder<GenreCubit, int?>(
-                            builder: (context, selectedGenreId) {
-                              return GenreGridView(
-                                genreItems: genresList,
-                                selectedGenreId: selectedGenreId,
-                                itemName: (item) => item.name,
-                                itemId: (item) => item.id,
+                  return BlocBuilder<GenreCubit, int?>(
+                    builder: (context, selectedGenreId) {
+                      return GenreGridView(
+                        genreItems: genresList,
+                        selectedGenreId: selectedGenreId,
+                        itemName: (item) => item.name,
+                        itemId: (item) => item.id,
 
-                                onTap: (genreId) {
-                                  context.read<GenreCubit>().selectGenre(
-                                    genreId,
-                                  );
+                        onTap: (genreId) {
+                          context.read<GenreCubit>().selectGenre(genreId);
 
-                                  if (genreId == null) {
-                                    context.read<MovieExploreBloc>().add(
-                                      FetchAllMovieEvent(),
-                                    );
-                                  } else {
-                                    context.read<MovieExploreBloc>().add(
-                                      FetchSelectDiscoverEvent(genre: genreId),
-                                    );
-                                  }
+                          if (genreId == null) {
+                            context.read<MovieExploreBloc>().add(
+                              FetchAllMovieEvent(),
+                            );
+                          } else {
+                            context.read<MovieExploreBloc>().add(
+                              FetchSelectDiscoverEvent(genre: genreId),
+                            );
+                          }
 
-                                  Navigator.pop(context);
-                                },
-                              );
-                            },
-                          );
-                        }
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                }
 
-                        return const Center(child: Text('No genres found'));
-                      },
-                    ),
-                  ),
-                );
+                return const Center(child: Text('No genres found'));
               },
-              child: const GenreButton(),
-            );
+            ),
+          ),
+        );
+      },
+      child: const GenreButton(),
+    );
   }
 
-  Widget _movieList(List<MovieResultEntity> movieExplore, MovieExploreLoaded state, BuildContext context) {
+  Widget _movieList(
+    List<MovieResultEntity> movieExplore,
+    MovieExploreLoaded state,
+    BuildContext context,
+  ) {
     return Expanded(
-              child: MediaGridView(
-                items: movieExplore,
-                isLoadingMore: state.isLoadingMore,
-                onLoadMore: () {
-                  final selectedGenreId = context.read<GenreCubit>().state;
+      child: MediaGridView(
+        items: movieExplore,
+        isLoadingMore: state.isLoadingMore,
+        isHasMore: state.hasMore,
+        onLoadMore: () {
+          final selectedGenreId = context.read<GenreCubit>().state;
 
-                  if (selectedGenreId == null) {
-                    context.read<MovieExploreBloc>().add(
-                      FetchMoreAllMovieEvent(),
-                    );
-                  } else {
-                    context.read<MovieExploreBloc>().add(
-                      FetchMoreSelectDiscoverEvent(genre: selectedGenreId),
-                    );
-                  }
-                },
-                onTap: (item) {
-                  BottomSheetHelper.show(
-                    context: context,
-                    backgroundColor: AppColors.bgDeep,
-                    child: MediaDetailsBottomSheet(
-                      id: item.id,
-                      title: item.title,
-                      image: item.posterPath,
-                      mediaType: 'movie',
-                      overview: item.overview,
-                      genresList: item.genreIds,
-                      rating: item.voteAverage,
-                      releaseDate: "",
-                    ),
-                  );
-                },
-                itemBuilder: (item) {
-                  return MediaCard(
-                    title: item.title,
-                    imageUrl: item.posterPath,
-                    rating: item.voteAverage,
-                  );
-                },
-              ),
+          if (selectedGenreId == null) {
+            context.read<MovieExploreBloc>().add(FetchMoreAllMovieEvent());
+          } else {
+            context.read<MovieExploreBloc>().add(
+              FetchMoreSelectDiscoverEvent(genre: selectedGenreId),
             );
+          }
+        },
+        onTap: (item) {
+          BottomSheetHelper.show(
+            context: context,
+            backgroundColor: AppColors.bgDeep,
+            child: MediaDetailsBottomSheet(
+              id: item.id,
+              title: item.title,
+              image: item.posterPath,
+              mediaType: 'movie',
+              overview: item.overview,
+              genresList: item.genreIds,
+              rating: item.voteAverage,
+              releaseDate: "",
+            ),
+          );
+        },
+        itemBuilder: (item) {
+          return MediaCard(
+            title: item.title,
+            imageUrl: item.posterPath,
+            rating: item.voteAverage,
+          );
+        },
+      ),
+    );
   }
 }

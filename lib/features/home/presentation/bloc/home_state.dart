@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:movie_verse/core/error/app_error_type.dart';
 import 'package:movie_verse/features/home/domain/entities/trending_result_entity.dart';
 import 'package:movie_verse/features/movie/domain/entities/movie_entity.dart';
 import 'package:movie_verse/features/tv_show/domain/entities/tv_show_entity.dart';
@@ -69,10 +70,12 @@ class HomeLoadedState extends HomeState {
 }
 
 class HomeErrorState extends HomeState {
-  final String message;
+  final AppErrorType errorType;
 
-  HomeErrorState({required this.message});
+  HomeErrorState({
+    required this.errorType,
+  });
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [errorType];
 }

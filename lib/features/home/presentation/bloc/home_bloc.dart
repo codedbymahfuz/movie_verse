@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/core/error/app_exception.dart';
 import 'package:movie_verse/features/home/domain/entities/trending_result_entity.dart';
 import 'package:movie_verse/features/home/domain/repositories/trending_repositories.dart';
 import 'package:movie_verse/features/home/presentation/bloc/home_event.dart';
@@ -44,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           ),
         );
       } catch (e) {
-        emit(HomeErrorState(message: e.toString()));
+        emit(HomeErrorState(errorType: mapExceptionToErrorType(e),),);
       }
     });
 
@@ -57,7 +58,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
           emit(currentState.copyWith(trendingList: trendingList));
         } catch (e) {
-          emit(HomeErrorState(message: e.toString()));
+          emit(HomeErrorState(errorType: mapExceptionToErrorType(e)));
         }
       }
     });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/core/widgets/error_retry_view.dart';
 import 'package:movie_verse/core/widgets/media_card.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
@@ -20,6 +21,10 @@ class TopRatedTvShowAllScreen extends StatefulWidget {
 }
 
 class _TopRatedTvShowAllScreenState extends State<TopRatedTvShowAllScreen> {
+  Future<void> _topRatedTvShowPageRefresh() async {
+    context.read<TvShowBloc>().add(FetchTopRatedTvShowEvent());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +47,13 @@ class _TopRatedTvShowAllScreenState extends State<TopRatedTvShowAllScreen> {
               builder: (context, state) {
                 if (state is TvShowLoadingState) {
                   return const Center(child: CircularProgressIndicator());
+                }
+
+                if (state is TvShowErrorState) {
+                  return ErrorRetryView(
+                    onRefresh: _topRatedTvShowPageRefresh,
+                    appErrorType: state.errorType,
+                  );
                 }
 
                 if (state is TvShowLoadedState) {
@@ -67,6 +79,7 @@ class _TopRatedTvShowAllScreenState extends State<TopRatedTvShowAllScreen> {
     return MediaGridView(
       items: topRated,
       isLoadingMore: state.isLoadingMore,
+      isHasMore: state.hasMore,
       onLoadMore: () {
         context.read<TvShowBloc>().add(FetchMoreTopRatedTvShowEvent());
       },

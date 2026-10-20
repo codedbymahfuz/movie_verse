@@ -74,27 +74,7 @@ class _MediaDetailsBottomSheetState extends State<MediaDetailsBottomSheet> {
 
             const SizedBox(height: 10),
 
-            BlocBuilder<VideoBloc, VideoState>(
-              builder: (context, state) {
-                if (state is TrailerVideoLoadingState) {}
-                if (state is TrailerVideoLoadedState) {
-                  final videos = state.videoResults;
-
-                  if (videos.isEmpty) {
-                    return EmptyTrailerPlaceholder(image: widget.image);
-                  }
-
-                  final trailer = videos.first;
-
-                  return TrailerPlayerCard(
-                    videoKey: trailer.key!,
-                    thumbnailUrl: widget.image,
-                  );
-                }
-
-                return const SizedBox.shrink();
-              },
-            ),
+            _videoPlay(),
 
             const SizedBox(height: 7),
 
@@ -122,7 +102,6 @@ class _MediaDetailsBottomSheetState extends State<MediaDetailsBottomSheet> {
                 ? const SizedBox(height: 15)
                 : const SizedBox.shrink(),
 
-            if (widget.genresList != null && widget.genresList!.isNotEmpty)
               if (widget.genresList != null && widget.genresList!.isNotEmpty)
                 _genresInfo(context),
 
@@ -133,6 +112,30 @@ class _MediaDetailsBottomSheetState extends State<MediaDetailsBottomSheet> {
         ),
       ),
     );
+  }
+
+  BlocBuilder<VideoBloc, VideoState> _videoPlay() {
+    return BlocBuilder<VideoBloc, VideoState>(
+            builder: (context, state) {
+              if (state is TrailerVideoLoadingState) {}
+              if (state is TrailerVideoLoadedState) {
+                final videos = state.videoResults;
+
+                if (videos.isEmpty) {
+                  return EmptyTrailerPlaceholder(image: widget.image);
+                }
+
+                final trailer = videos.first;
+
+                return TrailerPlayerCard(
+                  videoKey: trailer.key!,
+                  thumbnailUrl: widget.image,
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
+          );
   }
 
   Wrap _genresInfo(BuildContext context) {

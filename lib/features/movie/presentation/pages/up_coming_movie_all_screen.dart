@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
+import 'package:movie_verse/core/widgets/error_retry_view.dart';
 import 'package:movie_verse/core/widgets/media_card.dart';
 import 'package:movie_verse/core/widgets/media_details_screen.dart';
 import 'package:movie_verse/core/widgets/bottom_sheet_helper.dart';
@@ -19,6 +20,11 @@ class UpComingMovieAllScreen extends StatefulWidget {
 }
 
 class _UpComingMovieAllScreenState extends State<UpComingMovieAllScreen> {
+
+  Future<void> _upComingMoviePageRefresh() async {
+    context.read<MovieBloc>().add(FetchUpComingMovieEvent());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +47,13 @@ class _UpComingMovieAllScreenState extends State<UpComingMovieAllScreen> {
               builder: (context, state) {
                 if (state is MovieLoadingState) {
                   return const Center(child: CircularProgressIndicator());
+                }
+
+                 if (state is MovieErrorState) {
+                  return ErrorRetryView(
+                    onRefresh: _upComingMoviePageRefresh,
+                    appErrorType: state.errorType,
+                  );
                 }
 
                 if (state is MovieLoadedState) {
@@ -66,6 +79,7 @@ class _UpComingMovieAllScreenState extends State<UpComingMovieAllScreen> {
     return MediaGridView(
       items: upComingList,
       isLoadingMore: state.isLoadingMore,
+      isHasMore: state.hasMore,
       onLoadMore: () {
         context.read<MovieBloc>().add(FetchMoreUpcomingMovieEvent());
       },

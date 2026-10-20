@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_verse/core/cubit/genre_cubit.dart';
+import 'package:movie_verse/core/cubit/network_cubit.dart';
+import 'package:movie_verse/core/widgets/error_retry_view.dart';
 import 'package:movie_verse/core/widgets/genre_button.dart';
 import 'package:movie_verse/core/widgets/genre_girdview.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
@@ -24,6 +26,15 @@ class TvShowExploreScreen extends StatefulWidget {
 }
 
 class _TvShowExploreScreenState extends State<TvShowExploreScreen> {
+  Future<void> _tvExploreRefresh() async {
+    context.read<TvShowBloc>().add(FetchAllTvShowEvent());
+    context.read<TvShowGenresBloc>().add(FetchTvShowGenresItemEvent());
+  }
+
+   Future<void> _tvGenreItemRefresh() async {
+    context.read<TvShowGenresBloc>().add(FetchTvShowGenresItemEvent());
+  }
+
   @override
   void initState() {
     super.initState();
@@ -33,35 +44,47 @@ class _TvShowExploreScreenState extends State<TvShowExploreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TvShowBloc, TvShowState>(
+    return BlocListener<NetworkCubit, bool>(
+      listener: (context, isConnected){
+        if(isConnected) {
+          _tvExploreRefresh();
+        }
+    }, child: BlocBuilder<TvShowBloc, TvShowState>(
       builder: (context, state) {
         if (state is TvShowLoadingState) {
           return const Center(child: CircularProgressIndicator());
         }
 
         if (state is TvShowErrorState) {
-          return Center(child: Text("Error - ${state.errorMessage} "));
+          return ErrorRetryView(
+            onRefresh: _tvExploreRefresh,
+            appErrorType: state.errorType,
+          );
         }
 
         if (state is TvShowLoadedState) {
           final tvShowExplore = state.tvShowList.results;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
+          return RefreshIndicator(
+            onRefresh: _tvExploreRefresh,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
 
-              _genreFilterButton(context),
+                _genreFilterButton(context),
 
-              const SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-              Expanded(child: _tvShowList(tvShowExplore, state, context)),
-            ],
+                Expanded(child: _tvShowList(tvShowExplore, state, context)),
+              ],
+            ),
           );
         }
 
         return const SizedBox.shrink();
       },
+    )
     );
   }
 
@@ -81,7 +104,12 @@ class _TvShowExploreScreenState extends State<TvShowExploreScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                if (state is TvShowGenresItemErrorState) {}
+                if (state is TvShowGenresItemErrorState) {
+                  return ErrorRetryView(
+                    onRefresh: _tvGenreItemRefresh,
+                    appErrorType: state.errorType,
+                  );
+                }
 
                 if (state is TvShowGenresItemLoadedState) {
                   final genresList = state.genres.genres;
@@ -132,6 +160,7 @@ class _TvShowExploreScreenState extends State<TvShowExploreScreen> {
     return MediaGridView(
       items: tvShowExplore,
       isLoadingMore: state.isLoadingMore,
+      isHasMore: state.hasMore,
       onLoadMore: () {
         final selectedGenreId = context.read<GenreCubit>().state;
 

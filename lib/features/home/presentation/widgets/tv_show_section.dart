@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/core/utils/app_route.dart';
 import 'package:movie_verse/features/home/presentation/bloc/home_bloc.dart';
 import 'package:movie_verse/features/home/presentation/bloc/home_state.dart';
 import 'package:movie_verse/features/home/presentation/widgets/home_tv_show_card.dart';
@@ -29,9 +30,7 @@ class TvShowSection extends StatelessWidget {
                 moreOnPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => const PopularTvShowAllScreen(),
-                    ),
+                    AppRoute.custom(const PopularTvShowAllScreen()),
                   );
                 },
               ),
@@ -40,11 +39,10 @@ class TvShowSection extends StatelessWidget {
                 title: "Top Rated Tv Show",
                 tvShowResults: topRatedTv,
                 moreOnPressed: () {
+                 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => const TopRatedTvShowAllScreen(),
-                    ),
+                    AppRoute.custom(const TopRatedTvShowAllScreen()),
                   );
                 },
               ),

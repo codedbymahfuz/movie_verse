@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/core/cubit/network_cubit.dart';
+import 'package:movie_verse/core/widgets/error_retry_view.dart';
 import 'package:movie_verse/features/home/domain/entities/trending_result_entity.dart';
 import 'package:movie_verse/features/home/presentation/bloc/home_bloc.dart';
 import 'package:movie_verse/features/home/presentation/bloc/home_event.dart';
@@ -20,61 +22,80 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+
+  Future<void> _homePageRefresh() async {
+    context.read<HomeBloc>().add(FetcHomeEvent());
+  }
+
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().add(FetcHomeEvent()); 
+    context.read<HomeBloc>().add(FetcHomeEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return BlocListener<NetworkCubit, bool>(
+      listener: (context, isConnected){
+        if(isConnected) {
+          context.read<HomeBloc>().add(FetcHomeEvent());
+        }
+    }, child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-
           if (state is HomeLoadingState) {
-            return const Center(child: CircularProgressIndicator(),
-          );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (state is HomeErrorState) {
-            return Center(child: Text("Error - ${state.message}"));
+            return ErrorRetryView(
+              onRefresh: _homePageRefresh,
+              appErrorType: state.errorType,
+            );
           }
 
           if (state is HomeLoadedState) {
             final trendingList = state.trendingList;
 
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 12),
+            return RefreshIndicator(
+              onRefresh: _homePageRefresh,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 12),
 
-                  Row(
-                    children: [
-                      Text(
-                        "Trending",
-                        style: TextTheme.of(
-                          context,
-                        ).titleLarge?.copyWith(fontSize: 20),
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          "Trending",
+                          style: TextTheme.of(
+                            context,
+                          ).titleLarge?.copyWith(fontSize: 20),
+                        ),
 
-                      const SizedBox(width: 16),
-                    
-                    ],
-                  ),
+                        const SizedBox(width: 16),
+                      ],
+                    ),
 
-                  const SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
-                  _trendingSlider(trendingList),
+                    _trendingSlider(trendingList),
 
-                  const MovieSection(),
+                    const MovieSection(),
 
-                  Divider(color: Colors.grey.shade600, indent: 6, endIndent: 6),
+                    Divider(
+                      color: Colors.grey.shade600,
+                      indent: 6,
+                      endIndent: 6,
+                    ),
 
-                  const TvShowSection(),
-                ],
+                    const TvShowSection(),
+                  ],
+                ),
               ),
             );
           }
@@ -82,22 +103,22 @@ class _HomeScreenState extends State<HomeScreen> {
           return const SizedBox.shrink();
         },
       ),
+    ),
+    
     );
   }
 
   Widget _trendingSlider(List<TrendingResulstEntity> trendingList) {
     return CarouselSlider.builder(
       options: CarouselOptions(
-      height: 300.0,
-      aspectRatio: 16/9,
-      enlargeCenterPage: true,
-      autoPlay: true,
+        height: 300.0,
+        aspectRatio: 16 / 9,
+        enlargeCenterPage: true,
+        autoPlay: true,
       ),
-      
+
       itemCount: trendingList.length,
       itemBuilder: (context, index, realIndex) {
-
-        
         final item = trendingList[index];
 
         return Builder(
@@ -118,12 +139,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       rating: item.voteAverage,
                       releaseDate: item.firstAirDate,
                       mediaType: item.mediaType,
-                      
                     ),
                   );
                 },
-                 child: MediaCard(
-                  title: item.displayTitle, 
+                child: MediaCard(
+                  title: item.displayTitle,
                   imageUrl: item.displayPath,
                   fit: BoxFit.cover,
                 ),
@@ -133,6 +153,5 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
-
   }
 }

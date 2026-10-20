@@ -1,3 +1,4 @@
+import 'package:movie_verse/core/error/app_error_type.dart';
 import 'package:movie_verse/features/tv_show/domain/entities/tv_show_entity.dart';
 
 abstract class TvShowState {}
@@ -30,7 +31,7 @@ class TvShowLoadedState extends TvShowState {
 }
 
 class TvShowErrorState extends TvShowState {
-  final String errorMessage;
+  final AppErrorType errorType;
 
-  TvShowErrorState({required this.errorMessage});
+  TvShowErrorState({required this.errorType});
 }

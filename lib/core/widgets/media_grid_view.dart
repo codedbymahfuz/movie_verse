@@ -8,6 +8,7 @@ class MediaGridView<T> extends StatelessWidget {
   final void Function(T item) onTap;
   final VoidCallback? onLoadMore;
   final bool isLoadingMore;
+  final bool isHasMore;
   const MediaGridView({
     super.key,
     required this.items,
@@ -15,6 +16,7 @@ class MediaGridView<T> extends StatelessWidget {
     required this.onTap,
     this.onLoadMore,
     this.isLoadingMore = false,
+    required this.isHasMore,
   });
 
   @override
@@ -45,7 +47,7 @@ class MediaGridView<T> extends StatelessWidget {
 
           child: GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            itemCount: isLoadingMore
+            itemCount: isLoadingMore && isHasMore
                 ? items.length + crossAxisCount
                 : items.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -57,6 +59,9 @@ class MediaGridView<T> extends StatelessWidget {
 
             itemBuilder: (context, index) {
               if (index >= items.length) {
+                if (!isLoadingMore || !isHasMore) {
+                return const SizedBox.shrink();
+                }
                 return _buildDefaultShimmerItem();
               }
               final item = items[index];

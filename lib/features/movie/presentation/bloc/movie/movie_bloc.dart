@@ -1,5 +1,5 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/core/error/app_exception.dart';
 import 'package:movie_verse/core/utils/pagination_util.dart';
 import 'package:movie_verse/features/movie/domain/repositories/repositories.dart';
 import 'package:movie_verse/features/movie/presentation/bloc/movie/movie_event.dart';
@@ -31,8 +31,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
             hasMore: getPopularMovie.results.isNotEmpty,
           ),
         );
-      } catch (e) {
-        emit(MovieErrorState(errorMessage: e.toString()));
+      } catch (e) {   
+        emit(MovieErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 
@@ -70,7 +70,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
 
         emit(MovieLoadedState(movieList: topRatedMovie));
       } catch (e) {
-        emit(MovieErrorState(errorMessage: e.toString()));
+         emit(MovieErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 
@@ -106,7 +106,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
 
         emit(MovieLoadedState(movieList: upComingMovie));
       } catch (e) {
-        emit(MovieErrorState(errorMessage: e.toString()));
+        emit(MovieErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 
@@ -142,7 +142,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
 
         emit(MovieLoadedState(movieList: newMovieList));
       } catch (e) {
-        emit(MovieErrorState(errorMessage: e.toString()));
+        emit(MovieErrorState(errorType: mapExceptionToErrorType(e)));
       }
     });
 

@@ -1,5 +1,6 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_verse/core/error/app_exception.dart';
 import 'package:movie_verse/core/utils/pagination_util.dart';
 import 'package:movie_verse/features/search/domain/repositories/search_repositories.dart';
 import 'package:movie_verse/features/search/presentation/bloc/search_event.dart';
@@ -54,7 +55,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         ),
       );
     } catch (e) {
-      emit(SearchErrorState(message: e.toString()));
+      emit(SearchErrorState(errorType: mapExceptionToErrorType(e),));
     }
   }
 

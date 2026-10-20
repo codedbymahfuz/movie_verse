@@ -9,10 +9,11 @@ import 'package:movie_verse/features/search/domain/entities/search_result_entity
 class SearchResultScreen extends StatelessWidget {
   final List<SearchResultsEntity> queryItem;
   final bool isLoadingMore;
+  final bool isHasMore;
   final void Function() searchResultLoadMore;
 
   const SearchResultScreen({super.key, 
-  required this.queryItem, required this.searchResultLoadMore,  this.isLoadingMore = false,});
+  required this.queryItem, required this.searchResultLoadMore,  this.isLoadingMore = false, required this.isHasMore,});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class SearchResultScreen extends StatelessWidget {
     return MediaGridView(
       items: queryItem,
       isLoadingMore: isLoadingMore,
+      isHasMore: isHasMore,
       onLoadMore: () {
       searchResultLoadMore();
       },

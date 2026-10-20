@@ -1,3 +1,4 @@
+import 'package:movie_verse/core/error/app_error_type.dart';
 import 'package:movie_verse/features/movie/domain/entities/genre/genre_movie_entity.dart';
 
 abstract class TvShowGenresItemState {}
@@ -13,7 +14,7 @@ class TvShowGenresItemLoadedState extends TvShowGenresItemState {
 }
 
 class TvShowGenresItemErrorState extends TvShowGenresItemState {
-  final String errorMessage;
+  final AppErrorType errorType;
 
-  TvShowGenresItemErrorState({required this.errorMessage});
+  TvShowGenresItemErrorState({required this.errorType});
 }
