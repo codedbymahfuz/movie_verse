@@ -25,6 +25,7 @@ dependencies:
   get_it: ^9.3.0
   connectivity_plus: ^7.3.2
   lottie: ^3.6.1
+  flutter_launcher_icons: ^0.14.4
   
 
 dev_dependencies:
@@ -32,6 +33,11 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/app/assets/logo/movie_verse_logo.png"
 
 flutter:
   uses-material-design: true

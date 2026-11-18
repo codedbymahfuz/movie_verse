@@ -40,7 +40,7 @@ void setupDependencies() {
   getIt.registerLazySingleton<VideoRemoteDataSource>(
     () => VideoRemoteDataSource(),
   );
-  //----
+ 
 
   getIt.registerLazySingleton<TrendingRepoImpl>(
     () => TrendingRepoImpl(remoteDataSource: getIt<TrendingRemoteDataSource>()),
@@ -66,7 +66,6 @@ void setupDependencies() {
     () => VideoRepoImpl(remoteDataSource: getIt<VideoRemoteDataSource>()),
   );
 
- // bloc ------------
 
   getIt.registerFactory<HomeBloc>(()=> HomeBloc(
     movieRepository: getIt<MovieRepositoryImpl>(),

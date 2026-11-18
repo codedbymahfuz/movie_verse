@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:movie_verse/core/theme/app_colors.dart';
 

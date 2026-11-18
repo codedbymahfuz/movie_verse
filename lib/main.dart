@@ -40,7 +40,7 @@ void main() {
         BlocProvider(create: (_) => getIt<TvShowGenresBloc>()),
         
       ],
-      child: const MyApp(), 
+        child: const MyApp(), 
     ),
   );
 }
