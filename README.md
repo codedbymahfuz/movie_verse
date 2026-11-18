@@ -114,9 +114,11 @@ Each feature follows the same Data, Domain, and Presentation structure:
 
 Here is a quick look at MovieVerse and some of its main features.
 
-\<p align="center">
-&#x20; \<img src="screenshots/movie_verse_app_demo.gif" width="850" alt="MovieVerse App Demo"/>
-\</p>
+<p align="center">
+  <img src="./screenshots/movie_verse_app_demo.gif"
+       width="850"
+       alt="MovieVerse App Demo"/>
+</p>
 
 ---
 
@@ -124,13 +126,17 @@ Here is a quick look at MovieVerse and some of its main features.
 
 Here are some screenshots from MovieVerse, showing the main screens and a few of its features.
 
-### Main Screens
+<p align="center">
+  <img src="./screenshots/movie_verse_overview.png"
+       width="100%"
+       alt="MovieVerse Main Screens"/>
+</p>
 
-\<p align="center">   \<img src="screenshots/movie_verse_overview.png" width="100%" alt="MovieVerse Main Screens"/> \</p>
-
-### Search & Movie Details
-
-\<p align="center">   \<img src="screenshots/movie_verse_features.png" width="100%" alt="MovieVerse Search and Movie Details"/> \</p>
+<p align="center">
+  <img src="./screenshots/movie_verse_features.png"
+       width="100%"
+       alt="MovieVerse Search and Details"/>
+</p>
 
 
 ---
